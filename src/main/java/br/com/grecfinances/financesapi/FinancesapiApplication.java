@@ -9,5 +9,4 @@ public class FinancesapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FinancesapiApplication.class, args);
 	}
-
 }
