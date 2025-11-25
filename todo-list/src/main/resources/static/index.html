@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        [x-cloak] { display: none !important; }
+        .done-true { text-decoration: line-through; color: #6c757d; }
+        .cursor-pointer { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div x-data="todoApp()" x-init="initApp()" x-cloak>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" x-show="isLoggedIn">
+            <div class="container">
+                <a class="navbar-brand" href="#">Todo App</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{ 'active': view === 'tasks' }" href="#" @click.prevent="setView('tasks')">Minhas Tarefas</a>
+                        </li>
+                        <template x-if="isAdmin">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    Administração
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" @click.prevent="setView('admin_users')">Gerenciar Usuários</a></li>
+                                    <li><a class="dropdown-item" href="#" @click.prevent="setView('admin_tasks')">Todas as Tarefas</a></li>
+                                </ul>
+                            </li>
+                        </template>
+                    </ul>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-light btn-sm" @click="logout()">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+
+            <div x-show="message.text" class="alert alert-dismissible fade show" :class="'alert-' + message.type" role="alert">
+                <span x-text="message.text"></span>
+                <button type="button" class="btn-close" @click="message.text = ''"></button>
+            </div>
+
+            <div x-show="!isLoggedIn" class="row justify-content-center mt-5">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <h3 class="text-center mb-4">Login</h3>
+                            <form @submit.prevent="login">
+                                <div class="mb-3">
+                                    <label class="form-label">Usuário</label>
+                                    <input type="text" class="form-control" x-model="loginForm.username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Senha</label>
+                                    <input type="password" class="form-control" x-model="loginForm.password" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Entrar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="isLoggedIn && view === 'tasks'">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Minhas Tarefas</h5>
+                                <span class="badge bg-primary rounded-pill" x-text="myTasks.length + ' tarefas'"></span>
+                            </div>
+                            <div class="card-body">
+                                <form @submit.prevent="addTask" class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Nova tarefa..." x-model="newTaskTitle" required>
+                                    <button class="btn btn-success" type="submit"><i class="bi bi-plus-lg"></i> Adicionar</button>
+                                </form>
+
+                                <ul class="list-group list-group-flush">
+                                    <template x-for="task in myTasks" :key="task.id">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div class="form-check flex-grow-1">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" 
+                                                       :checked="task.done" @change="toggleTask(task)">
+                                                <label class="form-check-label cursor-pointer" 
+                                                       :class="{ 'done-true': task.done }" 
+                                                       x-text="task.title"
+                                                       @click="toggleTask(task)"></label>
+                                            </div>
+                                            <button class="btn btn-outline-danger btn-sm border-0" @click="deleteTask(task.id)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </li>
+                                    </template>
+                                    <template x-if="myTasks.length === 0">
+                                        <li class="list-group-item text-center text-muted">Nenhuma tarefa encontrada.</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="isLoggedIn && isAdmin && view === 'admin_users'">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Gerenciar Usuários</h5>
+                        <button class="btn btn-sm btn-primary" @click="showUserModal = true">Novo Usuário</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th class="text-end">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="user in usersList" :key="user.id">
+                                        <tr>
+                                            <td x-text="user.id"></td>
+                                            <td x-text="user.username"></td>
+                                            <td>
+                                                <span class="badge" :class="user.role === 'ADMIN' ? 'bg-danger' : 'bg-info'" x-text="user.role"></span>
+                                            </td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-danger" @click="deleteUser(user.username)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="showUserModal" class="modal" :class="{ 'd-block': showUserModal }" style="background: rgba(0,0,0,0.5)">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Novo Usuário</h5>
+                                <button type="button" class="btn-close" @click="showUserModal = false"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form @submit.prevent="createUser">
+                                    <div class="mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" x-model="newUserForm.username" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Senha</label>
+                                        <input type="password" class="form-control" x-model="newUserForm.password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Permissão</label>
+                                        <select class="form-select" x-model="newUserForm.role">
+                                            <option value="USER">USER</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                        </select>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-secondary" @click="showUserModal = false">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="isLoggedIn && isAdmin && view === 'admin_tasks'">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Todas as Tarefas (Visão Geral)</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Status</th>
+                                        <th>User ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="task in allTasksList" :key="task.id">
+                                        <tr>
+                                            <td x-text="task.id"></td>
+                                            <td x-text="task.title"></td>
+                                            <td>
+                                                <span class="badge" :class="task.done ? 'bg-success' : 'bg-warning'" 
+                                                      x-text="task.done ? 'Concluído' : 'Pendente'"></span>
+                                            </td>
+                                            <td x-text="task.userId"></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function todoApp() {
+            return {
+                // Estado
+                token: localStorage.getItem('todo_token') || null,
+                isLoggedIn: false,
+                isAdmin: false,
+                view: 'login', // login, tasks, admin_users, admin_tasks
+                message: { text: '', type: 'info' }, // type: success, danger, info
+                
+                // Dados
+                loginForm: { username: '', password: '' },
+                newTaskTitle: '',
+                myTasks: [],
+                usersList: [],
+                allTasksList: [],
+                
+                // Admin Formulário
+                showUserModal: false,
+                newUserForm: { username: '', password: '', role: 'USER' },
+
+                // Inicialização
+                initApp() {
+                    if (this.token) {
+                        this.isLoggedIn = true;
+                        this.fetchMyTasks();
+                        this.checkAdminRole();
+                    }
+                },
+
+                // Navegação
+                setView(viewName) {
+                    this.view = viewName;
+                    this.message.text = '';
+                    if (viewName === 'tasks') this.fetchMyTasks();
+                    if (viewName === 'admin_users') this.fetchUsers();
+                    if (viewName === 'admin_tasks') this.fetchAllTasks();
+                },
+
+                // Helper para Fetch com Auth
+                async authFetch(url, options = {}) {
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': this.token
+                    };
+                    const response = await fetch(url, { ...options, headers });
+                    
+                    if (response.status === 401) {
+                        this.logout();
+                        throw new Error('Sessão expirada');
+                    }
+                    return response;
+                },
+
+                // Autenticação
+                async login() {
+                    try {
+                        const res = await fetch('/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(this.loginForm)
+                        });
+                        
+                        const data = await res.json();
+                        
+                        if (res.ok) {
+                            this.token = data.token;
+                            localStorage.setItem('todo_token', this.token);
+                            this.isLoggedIn = true;
+                            this.loginForm = { username: '', password: '' };
+                            
+                            // Tenta verificar se é admin e carrega tarefas
+                            await this.checkAdminRole();
+                            this.setView('tasks');
+                        } else {
+                            this.showMessage(data.error || 'Erro no login', 'danger');
+                        }
+                    } catch (e) {
+                        this.showMessage('Erro de conexão', 'danger');
+                    }
+                },
+
+                logout() {
+                    // Opcional: Chamar API de logout
+                    if (this.token) {
+                        fetch('/logout', { method: 'PUT', headers: { 'Authorization': this.token } });
+                    }
+                    this.token = null;
+                    this.isLoggedIn = false;
+                    this.isAdmin = false;
+                    this.myTasks = [];
+                    localStorage.removeItem('todo_token');
+                    this.view = 'login';
+                },
+
+                // Verifica se o usuário é admin tentando acessar um endpoint restrito
+                async checkAdminRole() {
+                    try {
+                        // Tenta pegar usuários. Se conseguir (200), é admin. Se 403, é user.
+                        const res = await this.authFetch('/api/admin/users');
+                        if (res.ok) {
+                            this.isAdmin = true;
+                        } else {
+                            this.isAdmin = false;
+                        }
+                    } catch (e) {
+                        this.isAdmin = false;
+                    }
+                },
+
+                // Lógica de Tarefas (Usuário Comum)
+                async fetchMyTasks() {
+                    try {
+                        const res = await this.authFetch('/api/tasks');
+                        if (res.ok) {
+                            this.myTasks = await res.json();
+                        }
+                    } catch (e) { console.error(e); }
+                },
+
+                async addTask() {
+                    if (!this.newTaskTitle.trim()) return;
+                    try {
+                        const res = await this.authFetch('/api/tasks', {
+                            method: 'POST',
+                            body: JSON.stringify({ title: this.newTaskTitle })
+                        });
+                        if (res.ok) {
+                            this.newTaskTitle = '';
+                            this.fetchMyTasks();
+                        }
+                    } catch (e) {
+                        this.showMessage('Erro ao criar tarefa', 'danger');
+                    }
+                },
+
+                async toggleTask(task) {
+                    // O backend pede o objeto task completo ou parcial na atualização
+                    const updatedStatus = !task.done;
+                    try {
+                        // Atualização otimista na UI
+                        task.done = updatedStatus;
+                        
+                        const res = await this.authFetch(`/api/tasks/${task.id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify({ 
+                                title: task.title, 
+                                done: updatedStatus 
+                            })
+                        });
+                        
+                        if (!res.ok) {
+                            task.done = !updatedStatus; // Reverte em caso de erro
+                            const data = await res.json();
+                            this.showMessage(data.error, 'danger');
+                        }
+                    } catch (e) {
+                        task.done = !updatedStatus;
+                    }
+                },
+
+                async deleteTask(id) {
+                    if (!confirm('Tem certeza?')) return;
+                    try {
+                        const res = await this.authFetch(`/api/tasks/${id}`, { method: 'DELETE' });
+                        if (res.ok) {
+                            this.myTasks = this.myTasks.filter(t => t.id !== id);
+                        }
+                    } catch (e) {
+                        this.showMessage('Erro ao deletar', 'danger');
+                    }
+                },
+
+                // Lógica de Admin
+                async fetchUsers() {
+                    try {
+                        const res = await this.authFetch('/api/admin/users');
+                        if (res.ok) this.usersList = await res.json();
+                    } catch (e) { this.showMessage('Acesso negado aos usuários', 'danger'); }
+                },
+
+                async createUser() {
+                    try {
+                        const res = await this.authFetch('/api/admin/users', {
+                            method: 'POST',
+                            body: JSON.stringify(this.newUserForm)
+                        });
+                        if (res.ok) {
+                            this.showUserModal = false;
+                            this.newUserForm = { username: '', password: '', role: 'USER' };
+                            this.fetchUsers();
+                            this.showMessage('Usuário criado com sucesso', 'success');
+                        } else {
+                            const data = await res.json();
+                            this.showMessage(data.error || 'Erro ao criar usuário', 'danger');
+                        }
+                    } catch (e) { this.showMessage('Erro interno', 'danger'); }
+                },
+
+                async deleteUser(username) {
+                    if (!confirm(`Remover usuário ${username}?`)) return;
+                    try {
+                        const res = await this.authFetch(`/api/admin/users/${username}`, { method: 'DELETE' });
+                        if (res.ok) {
+                            this.fetchUsers();
+                        } else {
+                            this.showMessage('Erro ao deletar usuário', 'danger');
+                        }
+                    } catch (e) { console.error(e); }
+                },
+
+                async fetchAllTasks() {
+                    try {
+                        const res = await this.authFetch('/api/admin/tasks');
+                        if (res.ok) this.allTasksList = await res.json();
+                    } catch (e) { this.showMessage('Erro ao buscar tarefas', 'danger'); }
+                },
+
+                // Utilitários
+                showMessage(text, type) {
+                    this.message = { text, type };
+                    setTimeout(() => this.message.text = '', 3000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
