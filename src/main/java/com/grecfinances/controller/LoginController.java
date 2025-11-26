@@ -20,18 +20,13 @@ public class LoginController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @GetMapping("/hello")
+    @GetMapping("/home")
     public String hello(Model model) {
         String mensagem = "Olá, variável do Java!";
         model.addAttribute("mensagem", mensagem);
         return "hello";
     }
-
-    @GetMapping({"/", "/login"})
-    public String login() {
-        return "login";
-    }
-
+    // ...existing code...
     @PostMapping("/login")
     public String doLogin(@RequestParam("username") String username,
                           @RequestParam("password") String password,
@@ -42,13 +37,11 @@ public class LoginController {
         if (usuarioOpt.isPresent()) {
             UsuarioModel usuario = usuarioOpt.get();
             if (usuario.getSenha() != null && usuario.getSenha().equals(password)) {
-                // Autenticado com sucesso
                 session.setAttribute("usuarioLogado", usuario);
-                return "redirect:/hello"; // página pós-login
+                return "redirect:/home"; // atualizado para /home
             }
         }
 
-        // Falha ao autenticar
         redirectAttributes.addFlashAttribute("loginError", "Email ou senha inválidos");
         return "redirect:/login";
     }
