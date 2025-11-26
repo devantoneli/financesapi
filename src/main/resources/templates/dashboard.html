@@ -11,72 +11,34 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            background-color: #111216;
-            color: #edf2f7;
-        }
-        .navbar {
-            background-color: #0f1114;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-        .card {
-            background-color: #161823; /* slightly lighter than body for contrast */
-            border: none;
-            border-radius: 0.75rem;
-            color: #ffffff;
-        }
-        .main-content {
-            padding-top: 2rem;
-        }
-        .greeting {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .summary-card .card-title {
-            color: #e6eef8; /* brighter title */
-            font-size: 1rem;
-        }
-        .summary-card .card-text {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .summary-card .text-muted {
-            color: rgba(255,255,255,0.6) !important;
-        }
-        .chart-container {
-            position: relative;
-            height: 320px;
-            background-color: rgba(0,0,0,0.25);
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-
-        /* form control contrast */
-        .form-control {
-            background-color: rgba(255,255,255,0.03);
-            color: #e6eef8;
-            border-radius: 0.5rem;
-        }
-        .form-control::placeholder { color: rgba(230,238,248,0.45); }
+        :root{ --bg:#0f1620; --card:#111827; --muted: rgba(255,255,255,0.65); --accent:#5ea6ff }
+        body{background:var(--bg); color:#fff;}
+        .navbar{background:#0b0f14}
+        .brand{font-weight:700}
+        .search-input{background:rgba(255,255,255,0.03); color:var(--muted); border:none; border-radius:6px}
+        .card.custom{background:var(--card); border-radius:12px; border:none}
+        .title-lg{font-size:2rem; font-weight:700; color:#fff}
+        .subtitle{color:var(--muted)}
+        .summary-title{font-size:1.2rem; color:#fff; font-weight:600}
+        .summary-value{font-size:1.9rem; font-weight:700; color:var(--accent)}
+        .summary-small{color:rgba(255,255,255,0.6)}
+        .chart-wrap{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:16px; border-radius:10px}
+        @media (min-width:992px){ .left-col{max-width:360px} }
     </style>
 </head>
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#">GREC Finances</a>
+            <a class="navbar-brand brand" href="#">GREC Finances</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Lançamentos</a></li>
                 </ul>
-                <div class="d-flex align-items-center">
-                    <form class="d-flex me-3">
-                        <input class="form-control bg-dark text-white border-0" type="search" placeholder="Search" aria-label="Search">
-                    </form>
+                <form class="d-flex me-3" role="search">
+                    <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search">
+                </form>
+                <div class="d-flex align-items-center text-muted">
                     <i class="fas fa-bell me-3"></i>
                     <i class="fas fa-cog me-3"></i>
                     <i class="fas fa-user-circle fa-lg"></i>
@@ -85,105 +47,80 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container-fluid main-content">
-        <div class="px-4">
-            <!-- Greeting -->
-            <div class="mb-4">
-                <h1 class="greeting">Olá, <span th:text="${resumo.nomeUsuario}">Heeseung</span>! 👋</h1>
-                <p class="text-muted">É isso que está acontecendo com a sua loja esse mês.</p>
+    <main class="container-fluid py-4">
+        <div class="row gx-4">
+            <div class="col-12 mb-3">
+                <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! <span>👋</span></h1>
+                <p class="subtitle">É isso que está acontecendo com a sua loja esse mês.</p>
             </div>
 
-            <div class="row">
-                <!-- Left Column: Summary Cards -->
-                <div class="col-lg-4">
-                    <div class="card p-3 mb-4 summary-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Saldo</h5>
-                            <p class="card-text"><span id="saldoValue" th:text="${resumo.saldo}">0</span></p>
-                        </div>
-                    </div>
-                    <div class="card p-3 mb-4 summary-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Receita</h5>
-                            <p class="card-text"><span id="receitaValue" th:text="${resumo.receitaMensal}">0</span></p>
-                            <span class="text-muted">Esse mês</span>
-                        </div>
-                    </div>
-                    <div class="card p-3 mb-4 summary-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Despesa</h5>
-                            <p class="card-text"><span id="despesaValue" th:text="${resumo.despesaMensal}">0</span></p>
-                            <span class="text-muted">Esse mês</span>
+            <div class="col-lg-4 left-col">
+                <div class="card custom mb-3 p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="summary-title">Saldo</div>
+                            <div class="summary-value"><span id="saldoValue" th:text="${resumo.saldo}">R$ 0,00</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Chart -->
-                <div class="col-lg-8">
-                    <div class="card p-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Receita vs últimos meses</h5>
-                            <div class="chart-container">
-                                <canvas id="receitaChart"></canvas>
-                            </div>
-                        </div>
+                <div class="card custom mb-3 p-3">
+                    <div class="summary-title">Receita</div>
+                    <div class="summary-value"><span id="receitaValue" th:text="${resumo.receitaMensal}">R$ 0,00</span></div>
+                    <div class="summary-small">Esse mês</div>
+                </div>
+
+                <div class="card custom mb-3 p-3">
+                    <div class="summary-title">Despesa</div>
+                    <div class="summary-value"><span id="despesaValue" th:text="${resumo.despesaMensal}">R$ 0,00</span></div>
+                    <div class="summary-small">Esse mês</div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card custom p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div><strong>Receita</strong> <small class="subtitle">vs últimos meses</small></div>
+                        <div class="subtitle">&nbsp;</div>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="receitaChart" style="height:320px"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- JavaScript -->
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        // pegar valores brutos renderizados pelo Thymeleaf
+    /*<![CDATA[*/
+    window.addEventListener('DOMContentLoaded', function(){
         const rawSaldo = /*[[${resumo.saldo}]]*/ 0;
         const rawReceita = /*[[${resumo.receitaMensal}]]*/ 0;
         const rawDespesa = /*[[${resumo.despesaMensal}]]*/ 0;
         const receitaData = /*[[${resumo.receitaUltimosMeses}]]*/ [0,0,0,0,0,0,0,0,0,0,0,0];
 
-        // Formatação BRL
         const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-        document.getElementById('saldoValue').textContent = brl.format(rawSaldo);
-        document.getElementById('receitaValue').textContent = brl.format(rawReceita);
-        document.getElementById('despesaValue').textContent = brl.format(rawDespesa);
+        const s = document.getElementById('saldoValue'); if(s) s.textContent = brl.format(rawSaldo);
+        const r = document.getElementById('receitaValue'); if(r) r.textContent = brl.format(rawReceita);
+        const d = document.getElementById('despesaValue'); if(d) d.textContent = brl.format(rawDespesa);
 
         const ctx = document.getElementById('receitaChart').getContext('2d');
-
-        const chart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'],
-                datasets: [{
-                    label: 'Receita',
-                    data: receitaData,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                    borderRadius: 5
-                }]
+                labels: ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'],
+                datasets:[{ label:'Receita', data: receitaData, backgroundColor: 'rgba(94,166,255,0.85)', borderRadius:6 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#f8f9fa' }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#f8f9fa' }
-                    }
-                }
+            options:{
+                responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{ display:false } },
+                scales:{ x:{ grid:{ display:false }, ticks:{ color: 'rgba(255,255,255,0.8)' } },
+                         y:{ grid:{ color: 'rgba(255,255,255,0.04)' }, ticks:{ color: 'rgba(255,255,255,0.8)' }, beginAtZero:true } }
             }
         });
-        /*]]>*/
+    });
+    /*]]>*/
     </script>
+
 </body>
 </html>
