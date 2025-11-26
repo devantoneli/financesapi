@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HelloController {
+public class LoginController {
     @GetMapping("/hello")
     public String hello(Model model) {
         String mensagem = "Olá, variável do Java!";
