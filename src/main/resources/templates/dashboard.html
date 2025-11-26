@@ -23,6 +23,13 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Lançamentos</a></li>
+                    <!-- Botão search -->
+                    <form class="d-flex justify-content-lg-end" role="search">
+                        <div class="search-box">
+                            <i class="fas fa-search" style="color:rgba(255,255,255,0.5); margin-right:0.5rem"></i>
+                            <input class="search-input" type="search" placeholder="Search" aria-label="Search">
+                        </div>
+                    </form>
                 </ul>
             </div>
             <div class="d-none d-lg-flex align-items-center nav-icons" style="gap: 1.5rem;">
@@ -38,27 +45,22 @@
         <div class="row align-items-center">
             <div class="col-12 col-lg-6"></div>
             <div class="col-12 col-lg-6">
-                <form class="d-flex justify-content-lg-end" role="search">
-                    <div class="search-box">
-                        <i class="fas fa-search" style="color:rgba(255,255,255,0.5); margin-right:0.5rem"></i>
-                        <input class="search-input" type="search" placeholder="Search" aria-label="Search">
-                    </div>
-                </form>
             </div>
         </div>
     </div>
-
+    
     <main class="container-fluid">
         <div class="row g-2" style="padding:0 1rem">
             <div class="col-12 mb-1">
                 <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! 👋</h1>
                 <p class="subtitle">É isso que está acontecendo com a sua loja esse mês.</p>
             </div>
-
+            
             <div class="col-12 col-lg-4">
                 <div class="card custom">
                     <div class="summary-title">Saldo</div>
                     <div id="saldoValue" class="summary-value" th:text="${resumo.saldo}">R$ 0,00</div>
+                    <div class="summary-small">Atualmente</div>
                 </div>
             </div>
 

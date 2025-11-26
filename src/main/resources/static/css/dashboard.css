@@ -1,5 +1,14 @@
+/*
+ * Variáveis Globais e Estilos Base
+ * Define variáveis CSS raiz para cores e configura estilos básicos do corpo da página.
+ */
 :root{ --bg:#0f1620; --card:#111827; --muted:rgba(255,255,255,0.65); --accent:#5ea6ff }
 body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans-serif; margin:0; padding:0 }
+
+/*
+ * Estilos da Barra de Navegação (Navbar)
+ * Estilos para a barra de navegação principal, logotipo da marca, links de navegação e ícones.
+ */
 .navbar{ background:#0b0f14; padding:0.5rem 0; min-height:auto }
 .navbar-brand{ font-size:1.1rem; font-weight:700; color:#fff !important; margin:0 }
 .navbar .nav-link{ color:rgba(255,255,255,0.9) !important; margin:0 1rem; font-size:0.95rem }
@@ -7,29 +16,53 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
 .nav-icons{ display:flex; align-items:center; gap:1.5rem }
 .nav-icons i{ color:#ffffff; font-size:1.3rem; cursor:pointer; transition:all 0.2s }
 .nav-icons i:hover{ color:var(--accent); transform:scale(1.1) }
-.nav-icons img{ width:40px; height:40px; border-radius:50%; border:2px solid rgba(255,255,255,0.2) }
+.nav-icons img{ width:40px; height:40px; border-radius:50%; border:2px solid rgba(55, 59, 54, 0.2) }
 
+/*
+ * Estilos da Caixa de Pesquisa
+ * Estilização para o campo de entrada de pesquisa e seu contêiner.
+ */
 .search-box{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:6px 10px }
 .search-input{ background:transparent; color:#fff; border:none !important; font-size:0.95rem; padding:0 8px }
 .search-input::placeholder{ color:rgba(255,255,255,0.5) }
 .search-input:focus{ outline:none; color:#fff }
 
+/*
+ * Estilos de Cartão Personalizado
+ * Estilo geral para cartões personalizados usados em todo o dashboard.
+ */
 .card.custom{ background:var(--card); border-radius:12px; border:none; padding:1.2rem; box-shadow:0 4px 12px rgba(0,0,0,0.3) }
 .card.custom:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.4) }
 
+/*
+ * Estilos de Tipografia e Seção de Resumo
+ * Define estilos para títulos grandes, subtítulos e elementos de resumo financeiro.
+ */
 .title-lg{ font-size:1.8rem; font-weight:700; color:#fff; margin-bottom:0.5rem }
 .subtitle{ color:var(--muted); font-size:0.9rem }
 .summary-title{ font-size:0.95rem; color:rgba(255,255,255,0.8); font-weight:500 }
 .summary-value{ font-size:1.8rem; font-weight:700; color:var(--accent) }
 .summary-small{ color:rgba(255,255,255,0.55); font-size:0.85rem }
 
+/*
+ * Estilos de Gráfico
+ * Estilização específica para os contêineres de gráfico e elementos canvas.
+ */
 .chart-wrap{ background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent); padding:1rem; border-radius:10px; height:40vh; display:flex; align-items:center }
 .chart-wrap canvas{ width:100% !important; height:100% !important }
 
+/*
+ * Estilos da Área de Conteúdo Principal
+ * Ajustes para a área de conteúdo principal e elementos container-fluid.
+ */
 main{ min-height:calc(100vh - 120px); padding:1rem }
 .container-fluid{ padding-left:0; padding-right:0 }
 .container-fluid > .row{ margin-left:0; margin-right:0 }
 
+/*
+ * Ajustes Responsivos para Telas Menores (ex: Celulares)
+ * Media queries para otimizar o layout e o tamanho dos elementos para telas com até 768px de largura.
+ */
 @media (max-width:768px) {
   .navbar-brand{ font-size:1rem }
   .navbar .nav-link{ margin:0 0.5rem; font-size:0.9rem }
@@ -41,6 +74,11 @@ main{ min-height:calc(100vh - 120px); padding:1rem }
   .card.custom{ padding:1rem }
 }
 
+/*
+ * Ajustes Responsivos para Telas Maiores (ex: Desktops)
+ * Media queries para otimizar o layout para telas com 992px ou mais de largura.
+ */
 @media (min-width:992px) {
   .chart-wrap{ height:42vh }
 }
+
