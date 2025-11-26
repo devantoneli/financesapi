@@ -10,117 +10,102 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root{ --bg:#0f1620; --card:#111827; --muted: rgba(255,255,255,0.65); --accent:#5ea6ff }
-        body{background:var(--bg); color:#fff;}
-        .navbar{background:#0b0f14}
-        .brand{font-weight:700}
-        .search-input{background:rgba(255,255,255,0.03); color:var(--muted); border:none; border-radius:6px}
-        .card.custom{background:var(--card); border-radius:12px; border:none}
-        .title-lg{font-size:2rem; font-weight:700; color:#fff}
-        .subtitle{color:var(--muted)}
-        .summary-title{font-size:1.2rem; color:#fff; font-weight:600}
-        .summary-value{font-size:1.9rem; font-weight:700; color:var(--accent)}
-        .summary-small{color:rgba(255,255,255,0.6)}
-        .chart-wrap{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:16px; border-radius:10px}
-        @media (min-width:992px){ .left-col{max-width:360px} }
-    </style>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand brand" href="#">GREC Finances</a>
-            <div class="collapse navbar-collapse">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="#">GREC Finances</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Lançamentos</a></li>
                 </ul>
-                <form class="d-flex me-3" role="search">
-                    <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search">
-                </form>
-                <div class="d-flex align-items-center text-muted">
-                    <i class="fas fa-bell me-3"></i>
-                    <i class="fas fa-cog me-3"></i>
-                    <i class="fas fa-user-circle fa-lg"></i>
-                </div>
+            </div>
+            <div class="d-none d-lg-flex align-items-center nav-icons" style="gap: 1.5rem;">
+                <i class="fas fa-bell" title="Notificações"></i>
+                <i class="fas fa-cog" title="Configurações"></i>
+                <i class="fas fa-user-circle fa-lg" title="Perfil"></i>
             </div>
         </div>
     </nav>
 
-    <main class="container-fluid py-4">
-        <div class="row gx-4">
-            <div class="col-12 mb-3">
-                <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! <span>👋</span></h1>
+    <!-- Search moved below header -->
+    <div class="container-fluid" style="background:#0b0f14; border-bottom:1px solid rgba(255,255,255,0.08); padding:0.6rem 1rem">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6"></div>
+            <div class="col-12 col-lg-6">
+                <form class="d-flex justify-content-lg-end" role="search">
+                    <div class="search-box">
+                        <i class="fas fa-search" style="color:rgba(255,255,255,0.5); margin-right:0.5rem"></i>
+                        <input class="search-input" type="search" placeholder="Search" aria-label="Search">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="container-fluid">
+        <div class="row g-2" style="padding:0 1rem">
+            <div class="col-12 mb-1">
+                <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! 👋</h1>
                 <p class="subtitle">É isso que está acontecendo com a sua loja esse mês.</p>
             </div>
 
-            <div class="col-lg-4 left-col">
-                <div class="card custom mb-3 p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="summary-title">Saldo</div>
-                            <div class="summary-value"><span id="saldoValue" th:text="${resumo.saldo}">R$ 0,00</span></div>
-                        </div>
-                    </div>
+            <div class="col-12 col-lg-4">
+                <div class="card custom">
+                    <div class="summary-title">Saldo</div>
+                    <div id="saldoValue" class="summary-value" th:text="${resumo.saldo}">R$ 0,00</div>
                 </div>
+            </div>
 
-                <div class="card custom mb-3 p-3">
+            <div class="col-12 col-lg-4">
+                <div class="card custom">
                     <div class="summary-title">Receita</div>
-                    <div class="summary-value"><span id="receitaValue" th:text="${resumo.receitaMensal}">R$ 0,00</span></div>
-                    <div class="summary-small">Esse mês</div>
-                </div>
-
-                <div class="card custom mb-3 p-3">
-                    <div class="summary-title">Despesa</div>
-                    <div class="summary-value"><span id="despesaValue" th:text="${resumo.despesaMensal}">R$ 0,00</span></div>
+                    <div id="receitaValue" class="summary-value" th:text="${resumo.receitaMensal}">R$ 0,00</div>
                     <div class="summary-small">Esse mês</div>
                 </div>
             </div>
 
-            <div class="col-lg-8">
-                <div class="card custom p-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div><strong>Receita</strong> <small class="subtitle">vs últimos meses</small></div>
-                        <div class="subtitle">&nbsp;</div>
+            <div class="col-12 col-lg-4">
+                <div class="card custom">
+                    <div class="summary-title">Despesa</div>
+                    <div id="despesaValue" class="summary-value" th:text="${resumo.despesaMensal}">R$ 0,00</div>
+                    <div class="summary-small">Esse mês</div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card custom">
+                    <div class="mb-3">
+                        <strong style="font-size:1rem">Receita</strong>
+                        <span class="subtitle" style="margin-left:0.5rem">vs últimos meses</span>
                     </div>
                     <div class="chart-wrap">
-                        <canvas id="receitaChart" style="height:320px"></canvas>
+                        <canvas id="receitaChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- small inline script to expose model to external JS -->
     <script th:inline="javascript">
     /*<![CDATA[*/
-    window.addEventListener('DOMContentLoaded', function(){
-        const rawSaldo = /*[[${resumo.saldo}]]*/ 0;
-        const rawReceita = /*[[${resumo.receitaMensal}]]*/ 0;
-        const rawDespesa = /*[[${resumo.despesaMensal}]]*/ 0;
-        const receitaData = /*[[${resumo.receitaUltimosMeses}]]*/ [0,0,0,0,0,0,0,0,0,0,0,0];
-
-        const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-        const s = document.getElementById('saldoValue'); if(s) s.textContent = brl.format(rawSaldo);
-        const r = document.getElementById('receitaValue'); if(r) r.textContent = brl.format(rawReceita);
-        const d = document.getElementById('despesaValue'); if(d) d.textContent = brl.format(rawDespesa);
-
-        const ctx = document.getElementById('receitaChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'],
-                datasets:[{ label:'Receita', data: receitaData, backgroundColor: 'rgba(94,166,255,0.85)', borderRadius:6 }]
-            },
-            options:{
-                responsive:true, maintainAspectRatio:false,
-                plugins:{ legend:{ display:false } },
-                scales:{ x:{ grid:{ display:false }, ticks:{ color: 'rgba(255,255,255,0.8)' } },
-                         y:{ grid:{ color: 'rgba(255,255,255,0.04)' }, ticks:{ color: 'rgba(255,255,255,0.8)' }, beginAtZero:true } }
-            }
-        });
-    });
+    window.__RESUMO = {
+        saldo: /*[[${resumo.saldo}]]*/ 0,
+        receitaMensal: /*[[${resumo.receitaMensal}]]*/ 0,
+        despesaMensal: /*[[${resumo.despesaMensal}]]*/ 0,
+        receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ [0,0,0,0,0,0,0,0,0,0,0,0]
+    };
     /*]]>*/
     </script>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/dashboard.js"></script>
 
 </body>
 </html>
