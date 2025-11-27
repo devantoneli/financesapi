@@ -24,13 +24,16 @@ public class LancamentoController {
     public String salvarLancamento(@RequestParam("descricao") String descricao,
                                    @RequestParam("valor") BigDecimal valor,
                                    @RequestParam("tipo") String tipo,
+                                   @RequestParam("data") LocalDate data,
+                                   @RequestParam("categoria") String categoria,
                                    RedirectAttributes redirectAttributes) {
 
         TransacaoModel lancamento = new TransacaoModel();
         lancamento.setDescricao(descricao);
         lancamento.setValor(valor);
         lancamento.setTipo(tipo);
-        lancamento.setData(LocalDate.now());
+        lancamento.setData(data);
+        lancamento.setCategoria(categoria);
 
         // Lógica para salvar o lançamento no banco de dados
         // Por enquanto, vamos apenas simular o sucesso
