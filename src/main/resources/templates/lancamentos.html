@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançamentos - GREC Finances</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/lancamentos.css}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="javascript:void(0)">
+                <i class="fas fa-chart-line"></i> GREC Finances
+            </a>
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/lancamentos}">Lançamentos</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-icons">
+                <a href="javascript:void(0)"><i class="fas fa-bell"></i></a>
+                <a href="javascript:void(0)"><i class="fas fa-cog"></i></a>
+                <a href="javascript:void(0)"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container-main">
+        <!-- Título -->
+        <h1 class="page-title">Lista de Lançamentos</h1>
+
+        <!-- Seção de Controles -->
+        <div class="controls-section">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-box" placeholder="Buscar" id="searchInput">
+                <span class="total-count"><strong id="totalCount">0</strong> Lançamentos</span>
+            </div>
+            <div class="buttons-group">
+                <button class="btn-action">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn-action">
+                    <i class="fas fa-sliders-h"></i> Organizar: Padrão
+                </button>
+                <button class="btn-action btn-add">
+                    <i class="fas fa-plus"></i> Adicionar
+                </button>
+            </div>
+        </div>
+
+        <!-- Seção de Filtros -->
+        <div class="filters-section" id="filtersSection" style="display: none;">
+            <i class="fas fa-filter filter-icon" id="filterIcon" title="Abrir filtros"></i>
+            <div id="filtersContainer"></div>
+            <span class="clear-filters" id="clearAllFilters">Limpar tudo (<span id="filterCount">0</span>)</span>
+        </div>
+
+        <!-- Seção de Paginação -->
+        <div class="pagination-section" id="paginationSection" style="display: none;">
+            <div class="pagination-controls">
+                <button class="pagination-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="pagination-info"><strong id="currentPage">1</strong> de <strong id="totalPages">1</strong></span>
+                <button class="pagination-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="table-container">
+            <table id="lancamentosTable">
+                <thead>
+                    <tr>
+                        <th>Número de Lançamento</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="lancamentosBody">
+                    <tr>
+                        <td class="numero-lancamento">123456</td>
+                        <td>Freelancer - Projeto Web</td>
+                        <td>Trabalho</td>
+                        <td class="preco">R$ 1.500,00</td>
+                        <td>25/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123457</td>
+                        <td>Aluguel - Apartamento</td>
+                        <td>Moradia</td>
+                        <td class="preco">R$ 1.200,00</td>
+                        <td>24/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123458</td>
+                        <td>Supermercado - Alimentos</td>
+                        <td>Alimentação</td>
+                        <td class="preco">R$ 320,50</td>
+                        <td>24/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123459</td>
+                        <td>Salário</td>
+                        <td>Renda</td>
+                        <td class="preco">R$ 5.000,00</td>
+                        <td>23/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123460</td>
+                        <td>Academia - Mensalidade</td>
+                        <td>Saúde</td>
+                        <td class="preco">R$ 150,00</td>
+                        <td>22/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123461</td>
+                        <td>Consultoria - Projeto</td>
+                        <td>Trabalho</td>
+                        <td class="preco">R$ 800,00</td>
+                        <td>21/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123462</td>
+                        <td>Conta de Água</td>
+                        <td>Utilidades</td>
+                        <td class="preco">R$ 85,00</td>
+                        <td>20/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123463</td>
+                        <td>Uber - Transporte</td>
+                        <td>Transporte</td>
+                        <td class="preco">R$ 45,00</td>
+                        <td>19/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123464</td>
+                        <td>Bonus Mensal</td>
+                        <td>Renda</td>
+                        <td class="preco">R$ 2.500,00</td>
+                        <td>18/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123465</td>
+                        <td>Netflix - Assinatura</td>
+                        <td>Entretenimento</td>
+                        <td class="preco">R$ 39,90</td>
+                        <td>17/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123466</td>
+                        <td>Compras Online</td>
+                        <td>Compras</td>
+                        <td class="preco">R$ 250,00</td>
+                        <td>16/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123467</td>
+                        <td>Venda de Produtos</td>
+                        <td>Vendas</td>
+                        <td class="preco">R$ 600,00</td>
+                        <td>15/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123468</td>
+                        <td>Farmácia - Medicamentos</td>
+                        <td>Saúde</td>
+                        <td class="preco">R$ 120,00</td>
+                        <td>14/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123469</td>
+                        <td>Internet - Banda Larga</td>
+                        <td>Utilidades</td>
+                        <td class="preco">R$ 99,90</td>
+                        <td>13/11/2025</td>
+                        <td><span class="badge-despesa">Despesa</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="numero-lancamento">123470</td>
+                        <td>Fundo de Investimento</td>
+                        <td>Investimentos</td>
+                        <td class="preco">R$ 1.000,00</td>
+                        <td>12/11/2025</td>
+                        <td><span class="badge-receita">Receita</span></td>
+                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/lancamentos.js}"></script>
+</body>
+</html>
