@@ -23,6 +23,10 @@ public class LancamentosController {
         t1.setCategoria("Trabalho");
         t1.setValor(new BigDecimal("1500.00"));
         t1.setData(LocalDate.of(2025, 11, 25));
+        t1.setDescricao("Uber para Casa");
+        t1.setCategoria("Dia a Dia");
+        t1.setValor(new BigDecimal("10.00"));
+        t1.setData(LocalDate.of(2025, 11, 24));
         t1.setTipo("Receita");
         lancamentos.add(t1);
 
@@ -30,7 +34,9 @@ public class LancamentosController {
         t2.setId(2L);
         t2.setDescricao("Aluguel - Apartamento");
         t2.setCategoria("Moradia");
-        t2.setValor(new BigDecimal("1200.00"));
+        t2.setDescricao("Uber para Casa");
+        t2.setCategoria("Dia a Dia");
+        t2.setValor(new BigDecimal("10.00"));
         t2.setData(LocalDate.of(2025, 11, 24));
         t2.setTipo("Despesa");
         lancamentos.add(t2);
@@ -40,6 +46,9 @@ public class LancamentosController {
         t3.setDescricao("Supermercado - Alimentos");
         t3.setCategoria("Alimentação");
         t3.setValor(new BigDecimal("320.50"));
+        t3.setDescricao("Uber para Casa");
+        t3.setCategoria("Dia a Dia");
+        t3.setValor(new BigDecimal("10.00"));
         t3.setData(LocalDate.of(2025, 11, 24));
         t3.setTipo("Despesa");
         lancamentos.add(t3);
@@ -50,6 +59,10 @@ public class LancamentosController {
         t4.setCategoria("Renda");
         t4.setValor(new BigDecimal("5000.00"));
         t4.setData(LocalDate.of(2025, 11, 23));
+        t4.setDescricao("Uber para Casa");
+        t4.setCategoria("Dia a Dia");
+        t4.setValor(new BigDecimal("10.00"));
+        t4.setData(LocalDate.of(2025, 11, 24));
         t4.setTipo("Receita");
         lancamentos.add(t4);
 
@@ -61,6 +74,31 @@ public class LancamentosController {
         t5.setData(LocalDate.of(2025, 11, 22));
         t5.setTipo("Despesa");
         lancamentos.add(t5);
+
+        t5.setDescricao("Uber para Casa");
+        t5.setCategoria("Dia a Dia");
+        t5.setValor(new BigDecimal("10.00"));
+        t5.setData(LocalDate.of(2025, 11, 24));
+        t5.setTipo("Receita");
+        lancamentos.add(t5);
+
+        TransacaoModel t6 = new TransacaoModel();
+        t6.setId(6L);
+        t6.setDescricao("Uber para Casa");
+        t6.setCategoria("Dia a Dia");
+        t6.setValor(new BigDecimal("10.00"));
+        t6.setData(LocalDate.of(2025, 11, 24));
+        t6.setTipo("Receita");
+        lancamentos.add(t6);
+
+        TransacaoModel t7 = new TransacaoModel();
+        t7.setId(7L);
+        t7.setDescricao("Uber para Casa");
+        t7.setCategoria("Dia a Dia");
+        t7.setValor(new BigDecimal("10.00"));
+        t7.setData(LocalDate.of(2025, 11, 24));
+        t7.setTipo("Receita");
+        lancamentos.add(t7);
 
         model.addAttribute("lancamentos", lancamentos);
         model.addAttribute("total", lancamentos.size());

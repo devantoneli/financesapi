@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Adicionar event listeners aos filtros
     document.getElementById('filterIcon').addEventListener('click', openFilterModal);
     document.getElementById('clearAllFilters').addEventListener('click', clearAllFilters);
+
+    // Adicionar event listener ao botão "Adicionar"
+    document.querySelector('.btn-add').addEventListener('click', function() {
+        window.location.href = '/lancamentos/novo';
+    });
 });
 
 function updateTotalCount() {
