@@ -22,7 +22,9 @@ public class CadastroController {
 
     @PostMapping("/cadastro")
     public String processarCadastro(UsuarioModel usuario) {
-        usuarioRepository.save(usuario);
+        if (usuario != null) {
+            usuarioRepository.save(usuario);
+        }
         return "redirect:/login";
     }
 }
