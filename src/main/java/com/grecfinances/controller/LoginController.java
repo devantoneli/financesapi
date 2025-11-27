@@ -33,7 +33,7 @@ public class LoginController {
             UsuarioModel usuario = usuarioOpt.get();
             if (usuario.getSenha() != null && usuario.getSenha().equals(password)) {
                 session.setAttribute("usuarioLogado", usuario);
-                return "redirect:/dashboard";
+                return "redirect:/home";
             }
         }
 

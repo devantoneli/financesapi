@@ -4,50 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - GREC Finances</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" th:href="@{/css/lancamentos.css}">
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="#">GREC Finances</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" th:href="@{/dashboard}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/lancamentos}">Lançamentos</a></li>
-                    <!-- Botão search -->
-                    <form class="d-flex justify-content-lg-end" role="search">
-                        <div class="search-box">
-                            <i class="fas fa-search" style="color:rgba(255,255,255,0.5); margin-right:0.5rem"></i>
-                            <input class="search-input" type="search" placeholder="Search" aria-label="Search">
-                        </div>
-                    </form>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="javascript:void(0)">
+                <i class="fas fa-chart-line"></i> GREC Finances
+            </a>
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/lancamentos}">Lançamentos</a>
+                    </li>
                 </ul>
             </div>
-            <div class="d-none d-lg-flex align-items-center nav-icons" style="gap: 1.5rem;">
-                <i class="fas fa-bell" title="Notificações"></i>
-                <i class="fas fa-cog" title="Configurações"></i>
-                <i class="fas fa-user-circle fa-lg" title="Perfil"></i>
+            <div class="navbar-icons">
+                <a href="javascript:void(0)"><i class="fas fa-bell"></i></a>
+                <a href="javascript:void(0)"><i class="fas fa-cog"></i></a>
+                <a href="javascript:void(0)"><i class="fas fa-user-circle"></i></a>
             </div>
         </div>
     </nav>
-
-    <!-- Search moved below header -->
-    <div class="container-fluid" style="background:#0b0f14; border-bottom:1px solid rgba(255,255,255,0.08); padding:0.6rem 1rem">
-        <div class="row align-items-center">
-            <div class="col-12 col-lg-6"></div>
-            <div class="col-12 col-lg-6">
-            </div>
-        </div>
-    </div>
     
     <main class="container-fluid">
         <div class="row g-2" style="padding:0 1rem">
@@ -106,7 +90,6 @@
     /*]]>*/
     </script>
 
-    <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/dashboard.js"></script>
 
 </body>
