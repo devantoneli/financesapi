@@ -5,36 +5,33 @@
     --accent: #5ea6ff;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background: var(--bg);
     color: #fff;
     font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Navbar */
 .navbar {
     background: #0b0f14;
-    padding: 0.5rem 0;
-    min-height: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .navbar-brand {
-    font-size: 1.1rem;
     font-weight: 700;
+    font-size: 1.1rem;
     color: #fff !important;
-    margin: 0;
+}
+
+.navbar-brand i {
+    color: var(--accent);
+    margin-right: 0.5rem;
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    margin: 0 1rem;
+    color: var(--muted) !important;
     font-size: 0.95rem;
+    transition: all 0.2s;
+    margin: 0 1rem;
 }
 
 .nav-link:hover,
@@ -45,28 +42,24 @@ body {
 
 .navbar-icons {
     display: flex;
-    align-items: center;
     gap: 1.5rem;
-    margin-left: auto;
 }
 
 .navbar-icons a {
-    color: #ffffff;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    color: var(--muted);
+    font-size: 1.1rem;
     text-decoration: none;
+    transition: color 0.2s;
 }
 
 .navbar-icons a:hover {
     color: var(--accent);
-    transform: scale(1.1);
 }
 
-/* Container principal */
-.container-main {
-    padding: 1rem;
-    min-height: calc(100vh - 120px);
+/* Main Container */
+main {
+    min-height: calc(100vh - 80px);
+    padding: 2rem 1rem;
 }
 
 .page-title {
@@ -76,59 +69,57 @@ body {
     color: #fff;
 }
 
-/* Seção de Controles */
-.controls-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.table-responsive {
+    margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Controls Section */
+.d-flex.justify-content-between {
     margin-bottom: 1.5rem;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.input-group {
+    width: auto;
 }
 
-.search-box {
+.form-control {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    padding: 6px 10px;
     color: #fff;
     width: 200px;
 }
 
-.search-box::placeholder {
+.form-control::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.search-box:focus {
-    outline: none;
-    border-color: rgba(255, 255, 255, 0.2);
+.form-control:focus {
     background: rgba(255, 255, 255, 0.1);
-}
-
-.total-count {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-left: 1rem;
-}
-
-.total-count strong {
+    border-color: rgba(255, 255, 255, 0.2);
     color: #fff;
-    font-weight: 600;
+    box-shadow: none;
 }
 
-.buttons-group {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+.input-group-text {
+    background: transparent;
+    border: none;
+    color: var(--muted);
 }
 
-.btn-action {
+.badge.bg-secondary {
+    background: var(--muted) !important;
+    color: #fff;
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.btn-sm {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: #fff;
@@ -137,29 +128,27 @@ body {
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.btn-action:hover {
+.btn-sm:hover {
     background: rgba(255, 255, 255, 0.12);
     color: var(--accent);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
-.btn-add {
-    background: var(--accent);
-    border: 1px solid var(--accent);
-    color: #0b0f14;
+.btn-primary {
+    background: var(--accent) !important;
+    border: 1px solid var(--accent) !important;
+    color: #0b0f14 !important;
     font-weight: 600;
 }
 
-.btn-add:hover {
-    background: #4a95ff;
-    border-color: #4a95ff;
+.btn-primary:hover {
+    background: #4a95ff !important;
+    border-color: #4a95ff !important;
 }
 
-/* Seção de Filtros */
+/* Filters Section */
 .filters-section {
     display: flex;
     align-items: center;
@@ -208,7 +197,7 @@ body {
     color: #fff;
 }
 
-/* Seção de Paginação */
+/* Pagination */
 .pagination-section {
     display: flex;
     justify-content: flex-end;
@@ -222,12 +211,6 @@ body {
     margin: 0 1rem;
 }
 
-.pagination-controls {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
 .pagination-btn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -237,6 +220,7 @@ body {
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
+    margin: 0 0.25rem;
 }
 
 .pagination-btn:hover {
@@ -244,42 +228,45 @@ body {
     color: var(--accent);
 }
 
-/* Tabela */
-.table-container {
-    background: var(--card);
+/* Table */
+.table {
+    background: var(--card) !important;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-th {
-    padding: 1rem;
-    text-align: left;
     color: #fff;
+    margin-bottom: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: none !important;
+}
+
+.table thead {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.table thead th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
     font-weight: 600;
     font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-top: none !important;
 }
 
-td {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.table tbody td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     color: var(--muted);
     font-size: 0.9rem;
+    padding: 1rem !important;
+    background: var(--card) !important;
 }
 
-tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-    transition: background-color 0.2s;
+.table tbody tr {
+    background: var(--card) !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .numero-lancamento {
@@ -292,102 +279,45 @@ tbody tr:hover {
     font-weight: 500;
 }
 
-/* Badges de Tipo */
 .badge-receita {
-    background: rgba(74, 222, 128, 0.15);
-    color: #4ade80;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-block;
+    background: rgba(74, 222, 128, 0.15) !important;
+    color: #4ade80 !important;
     border: 1px solid rgba(74, 222, 128, 0.3);
+    font-weight: 600;
 }
 
 .badge-despesa {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-block;
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
     border: 1px solid rgba(239, 68, 68, 0.3);
+    font-weight: 600;
 }
 
-/* Menu de Ações */
 .action-menu {
     color: var(--muted);
     cursor: pointer;
-    font-size: 1rem;
-    transition: color 0.2s;
     text-decoration: none;
+    transition: color 0.2s;
 }
 
 .action-menu:hover {
     color: var(--accent);
 }
 
-/* Empty State */
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    color: var(--muted);
-}
-
-.empty-state i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
-}
-
-.empty-state p {
-    font-size: 1rem;
-    margin-top: 0.5rem;
-}
-
-/* Responsividade */
 @media (max-width: 768px) {
-    .controls-section {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-container {
+    .form-control {
         width: 100%;
     }
 
-    .search-box {
-        width: 100%;
-    }
-
-    .buttons-group {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .pagination-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    table {
+    .table thead {
         font-size: 0.85rem;
     }
 
-    th, td {
+    .table tbody td {
         padding: 0.75rem;
     }
 
     .page-title {
         font-size: 1.4rem;
-    }
-
-    .container-main {
-        padding: 0.75rem;
     }
 }

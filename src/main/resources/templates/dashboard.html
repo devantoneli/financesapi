@@ -6,7 +6,7 @@
     <title>Dashboard - GREC Finances</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/lancamentos.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 
 </head>
 <body>
@@ -75,6 +75,62 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card custom">
+                    <div class="mb-3">
+                        <strong style="font-size:1rem">Despesas por Categoria</strong>
+                    </div>
+                    <div class="chart-wrap-small">
+                        <canvas id="categoriaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card custom">
+                    <div class="mb-3">
+                        <strong style="font-size:1rem">Entradas e Saídas</strong>
+                    </div>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">Salário</div>
+                                <div class="transaction-category">Renda</div>
+                            </div>
+                            <div class="transaction-amount receita">+R$ 5.000,00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">Aluguel</div>
+                                <div class="transaction-category">Moradia</div>
+                            </div>
+                            <div class="transaction-amount despesa">-R$ 1.200,00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">Freelancer</div>
+                                <div class="transaction-category">Trabalho</div>
+                            </div>
+                            <div class="transaction-amount receita">+R$ 1.500,00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">Supermercado</div>
+                                <div class="transaction-category">Alimentação</div>
+                            </div>
+                            <div class="transaction-amount despesa">-R$ 320,50</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">Internet</div>
+                                <div class="transaction-category">Utilidades</div>
+                            </div>
+                            <div class="transaction-amount despesa">-R$ 99,90</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -85,11 +141,13 @@
         saldo: /*[[${resumo.saldo}]]*/ 0,
         receitaMensal: /*[[${resumo.receitaMensal}]]*/ 0,
         despesaMensal: /*[[${resumo.despesaMensal}]]*/ 0,
-        receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ [0,0,0,0,0,0,0,0,0,0,0,0]
+        receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ []
     };
     /*]]>*/
     </script>
 
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="/js/dashboard.js"></script>
 
 </body>

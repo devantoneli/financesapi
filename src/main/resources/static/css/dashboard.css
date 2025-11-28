@@ -9,15 +9,6 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
  * Estilos da Barra de Navegação (Navbar)
  * Estilos para a barra de navegação principal, logotipo da marca, links de navegação e ícones.
  */
-.navbar{ background:#0b0f14; padding:0.5rem 0; min-height:auto }
-.navbar-brand{ font-size:1.1rem; font-weight:700; color:#fff !important; margin:0 }
-.navbar .nav-link{ color:rgba(255,255,255,0.9) !important; margin:0 1rem; font-size:0.95rem }
-.navbar .nav-link.active{ color:#fff !important; font-weight:600 }
-.nav-icons{ display:flex; align-items:center; gap:1.5rem }
-.nav-icons i{ color:#ffffff; font-size:1.3rem; cursor:pointer; transition:all 0.2s }
-.nav-icons i:hover{ color:var(--accent); transform:scale(1.1) }
-.nav-icons img{ width:40px; height:40px; border-radius:50%; border:2px solid rgba(55, 59, 54, 0.2) }
-
 /*
  * Estilos da Caixa de Pesquisa
  * Estilização para o campo de entrada de pesquisa e seu contêiner.
@@ -51,6 +42,9 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
 .chart-wrap{ background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent); padding:1rem; border-radius:10px; height:40vh; display:flex; align-items:center }
 .chart-wrap canvas{ width:100% !important; height:100% !important }
 
+.chart-wrap-small{ background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent); padding:1rem; border-radius:10px; height:30vh; display:flex; align-items:center }
+.chart-wrap-small canvas{ width:100% !important; height:100% !important }
+
 /*
  * Estilos da Área de Conteúdo Principal
  * Ajustes para a área de conteúdo principal e elementos container-fluid.
@@ -58,6 +52,25 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
 main{ min-height:calc(100vh - 120px); padding:1rem }
 .container-fluid{ padding-left:0; padding-right:0 }
 .container-fluid > .row{ margin-left:0; margin-right:0 }
+
+/* Transaction List Styles */
+.transaction-list{ display:flex; flex-direction:column; gap:1rem; max-height:35vh; overflow-y:auto; padding-right:0.5rem }
+.transaction-list::-webkit-scrollbar{ width:6px }
+.transaction-list::-webkit-scrollbar-track{ background:rgba(255,255,255,0.05); border-radius:10px }
+.transaction-list::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.2); border-radius:10px }
+.transaction-list::-webkit-scrollbar-thumb:hover{ background:rgba(255,255,255,0.3) }
+
+.transaction-item{ display:flex; justify-content:space-between; align-items:center; padding:1.2rem; background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02)); border-radius:10px; border:1px solid rgba(255,255,255,0.08); transition:all 0.3s ease; position:relative; overflow:hidden }
+.transaction-item::before{ content:''; position:absolute; left:0; top:0; height:100%; width:3px; background:linear-gradient(180deg,rgba(94,166,255,0.8),rgba(94,166,255,0.3)); }
+.transaction-item:hover{ background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04)); border-color:rgba(255,255,255,0.15); transform:translateX(4px) }
+
+.transaction-info{ flex:1 }
+.transaction-title{ color:#fff; font-weight:700; font-size:0.95rem; letter-spacing:0.5px }
+.transaction-category{ color:rgba(255,255,255,0.75); font-size:0.8rem; margin-top:0.35rem; text-transform:uppercase; letter-spacing:0.3px }
+
+.transaction-amount{ font-weight:700; font-size:1rem; white-space:nowrap; margin-left:1rem; text-shadow:0 2px 4px rgba(0,0,0,0.3) }
+.transaction-amount.receita{ color:#4ade80; text-shadow:0 0 8px rgba(74,222,128,0.3) }
+.transaction-amount.despesa{ color:#ef4444; text-shadow:0 0 8px rgba(239,68,68,0.3) }
 
 /*
  * Ajustes Responsivos para Telas Menores (ex: Celulares)

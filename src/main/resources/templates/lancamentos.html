@@ -34,25 +34,27 @@
     </nav>
 
     <!-- Container Principal -->
-    <div class="container-main">
+    <main class="container-fluid">
         <!-- Título -->
         <h1 class="page-title">Lista de Lançamentos</h1>
 
         <!-- Seção de Controles -->
-        <div class="controls-section">
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" class="search-box" placeholder="Buscar" id="searchInput">
-                <span class="total-count"><strong id="totalCount">0</strong> Lançamentos</span>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Buscar" id="searchInput">
+                </div>
+                <span class="badge bg-secondary"><strong id="totalCount">0</strong> Lançamentos</span>
             </div>
-            <div class="buttons-group">
-                <button class="btn-action">
+            <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-sm">
                     <i class="fas fa-download"></i> Exportar
                 </button>
-                <button class="btn-action">
+                <button class="btn btn-sm">
                     <i class="fas fa-sliders-h"></i> Organizar: Padrão
                 </button>
-                <button class="btn-action btn-add">
+                <button class="btn btn-sm btn-primary">
                     <i class="fas fa-plus"></i> Adicionar
                 </button>
             </div>
@@ -67,20 +69,18 @@
 
         <!-- Seção de Paginação -->
         <div class="pagination-section" id="paginationSection" style="display: none;">
-            <div class="pagination-controls">
-                <button class="pagination-btn" id="prevBtn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <span class="pagination-info"><strong id="currentPage">1</strong> de <strong id="totalPages">1</strong></span>
-                <button class="pagination-btn" id="nextBtn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
+            <button class="pagination-btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="pagination-info"><strong id="currentPage">1</strong> de <strong id="totalPages">1</strong></span>
+            <button class="pagination-btn" id="nextBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
 
         <!-- Tabela -->
-        <div class="table-container">
-            <table id="lancamentosTable">
+        <div class="table-responsive mt-3">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Número de Lançamento</th>
@@ -93,145 +93,11 @@
                     </tr>
                 </thead>
                 <tbody id="lancamentosBody">
-                    <tr>
-                        <td class="numero-lancamento">123456</td>
-                        <td>Freelancer - Projeto Web</td>
-                        <td>Trabalho</td>
-                        <td class="preco">R$ 1.500,00</td>
-                        <td>25/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123457</td>
-                        <td>Aluguel - Apartamento</td>
-                        <td>Moradia</td>
-                        <td class="preco">R$ 1.200,00</td>
-                        <td>24/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123458</td>
-                        <td>Supermercado - Alimentos</td>
-                        <td>Alimentação</td>
-                        <td class="preco">R$ 320,50</td>
-                        <td>24/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123459</td>
-                        <td>Salário</td>
-                        <td>Renda</td>
-                        <td class="preco">R$ 5.000,00</td>
-                        <td>23/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123460</td>
-                        <td>Academia - Mensalidade</td>
-                        <td>Saúde</td>
-                        <td class="preco">R$ 150,00</td>
-                        <td>22/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123461</td>
-                        <td>Consultoria - Projeto</td>
-                        <td>Trabalho</td>
-                        <td class="preco">R$ 800,00</td>
-                        <td>21/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123462</td>
-                        <td>Conta de Água</td>
-                        <td>Utilidades</td>
-                        <td class="preco">R$ 85,00</td>
-                        <td>20/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123463</td>
-                        <td>Uber - Transporte</td>
-                        <td>Transporte</td>
-                        <td class="preco">R$ 45,00</td>
-                        <td>19/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123464</td>
-                        <td>Bonus Mensal</td>
-                        <td>Renda</td>
-                        <td class="preco">R$ 2.500,00</td>
-                        <td>18/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123465</td>
-                        <td>Netflix - Assinatura</td>
-                        <td>Entretenimento</td>
-                        <td class="preco">R$ 39,90</td>
-                        <td>17/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123466</td>
-                        <td>Compras Online</td>
-                        <td>Compras</td>
-                        <td class="preco">R$ 250,00</td>
-                        <td>16/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123467</td>
-                        <td>Venda de Produtos</td>
-                        <td>Vendas</td>
-                        <td class="preco">R$ 600,00</td>
-                        <td>15/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123468</td>
-                        <td>Farmácia - Medicamentos</td>
-                        <td>Saúde</td>
-                        <td class="preco">R$ 120,00</td>
-                        <td>14/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123469</td>
-                        <td>Internet - Banda Larga</td>
-                        <td>Utilidades</td>
-                        <td class="preco">R$ 99,90</td>
-                        <td>13/11/2025</td>
-                        <td><span class="badge-despesa">Despesa</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="numero-lancamento">123470</td>
-                        <td>Fundo de Investimento</td>
-                        <td>Investimentos</td>
-                        <td class="preco">R$ 1.000,00</td>
-                        <td>12/11/2025</td>
-                        <td><span class="badge-receita">Receita</span></td>
-                        <td><a href="javascript:void(0)" class="action-menu"><i class="fas fa-ellipsis-v"></i></a></td>
-                    </tr>
+                    <!-- Dados serão preenchidos pelo banco de dados -->
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/lancamentos.js}"></script>

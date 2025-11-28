@@ -17,7 +17,15 @@ public class DashboardController {
         
         if (usuario != null) {
             resumo.setNomeUsuario(usuario.getNome());
+        } else {
+            resumo.setNomeUsuario("Usuário");
         }
+        
+        // TODO: Integrar com banco de dados para preencher esses valores
+        // resumo.setSaldo(...);
+        // resumo.setReceitaMensal(...);
+        // resumo.setDespesaMensal(...);
+        // resumo.setReceitaUltimosMeses(...);
         
         model.addAttribute("resumo", resumo);
         return "dashboard";
