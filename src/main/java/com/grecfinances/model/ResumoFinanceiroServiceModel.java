@@ -28,33 +28,33 @@ public class ResumoFinanceiroServiceModel {
     public void setReceitaUltimosMeses(List<BigDecimal> receitaUltimosMeses) { this.receitaUltimosMeses = receitaUltimosMeses; }
 
     // Métodos de cálculo existentes
-    public BigDecimal calcularTotalReceitas(List<TransacaoModel> transacoes){
+    public BigDecimal calcularTotalReceitas(List<LancamentoModel> lancamentos){
         BigDecimal totalReceitas = BigDecimal.ZERO;
-        for (TransacaoModel transacao : transacoes) {
-            if ("receita".equalsIgnoreCase(transacao.getTipo())) {
-                totalReceitas = totalReceitas.add(transacao.getValor());
+        for (LancamentoModel lancamento : lancamentos) {
+            if ("receita".equalsIgnoreCase(lancamento.getTipo())) {
+                totalReceitas = totalReceitas.add(lancamento.getValor());
             }
         }
         return totalReceitas;
     }
 
-    public BigDecimal calcularTotalDespesas(List<TransacaoModel> transacoes){
+    public BigDecimal calcularTotalDespesas(List<LancamentoModel> lancamentos){
         BigDecimal totalDespesas = BigDecimal.ZERO;
-        for (TransacaoModel transacao : transacoes) {
-            if ("despesa".equalsIgnoreCase(transacao.getTipo())) {
-                totalDespesas = totalDespesas.add(transacao.getValor());
+        for (LancamentoModel lancamento : lancamentos) {
+            if ("despesa".equalsIgnoreCase(lancamento.getTipo())) {
+                totalDespesas = totalDespesas.add(lancamento.getValor());
             }
         }
         return totalDespesas;
     }
 
-    public BigDecimal calcularSaldoFinal(List<TransacaoModel> transacoes){
+    public BigDecimal calcularSaldoFinal(List<LancamentoModel> lancamentos){
         BigDecimal saldoFinal = BigDecimal.ZERO;
-        for (TransacaoModel transacao : transacoes) {
-            if ("receita".equalsIgnoreCase(transacao.getTipo())) {
-                saldoFinal = saldoFinal.add(transacao.getValor());
-            } else if ("despesa".equalsIgnoreCase(transacao.getTipo())) {
-                saldoFinal = saldoFinal.subtract(transacao.getValor());
+        for (LancamentoModel lancamento : lancamentos) {
+            if ("receita".equalsIgnoreCase(lancamento.getTipo())) {
+                saldoFinal = saldoFinal.add(lancamento.getValor());
+            } else if ("despesa".equalsIgnoreCase(lancamento.getTipo())) {
+                saldoFinal = saldoFinal.subtract(lancamento.getValor());
             }
         }
         return saldoFinal;

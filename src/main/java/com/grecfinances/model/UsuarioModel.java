@@ -17,7 +17,7 @@ public class UsuarioModel {
     private String senha;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TransacaoModel> listaDeTransacoes = new ArrayList<>();
+    private List<LancamentoModel> listaDeLancamentos = new ArrayList<>();
 
     public UsuarioModel() {}
 
@@ -33,8 +33,8 @@ public class UsuarioModel {
     public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
 
-    public List<TransacaoModel> getListaDeTransacoes() { return listaDeTransacoes; }
-    public void setListaDeTransacoes(List<TransacaoModel> listaDeTransacoes) {
-        this.listaDeTransacoes = listaDeTransacoes;
+    public List<LancamentoModel> getListaDeLancamentos() { return listaDeLancamentos; }
+    public void setListaDeLancamentos(List<LancamentoModel> listaDeLancamentos) {
+        this.listaDeLancamentos = listaDeLancamentos;
     }
 }

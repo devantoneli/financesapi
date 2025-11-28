@@ -34,5 +34,5 @@ build/
 
 .fake
 
-.db
 financesdb.mv.db
+financesdb.trace.db

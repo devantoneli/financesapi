@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "transacao")
-public class TransacaoModel {
+public class LancamentoModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,15 +14,16 @@ public class TransacaoModel {
     private String descricao;
     private BigDecimal valor;
     private LocalDate data;
-    private String categoria;
-    private String tipo; // "receita" ou "despesa"
+    private Integer categoria; // Estrangeira de Categoria
+    private String tipo; // "Receita" ou "Despesa"
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_categoria", nullable = false)
     
-    private UsuarioModel usuario;
+    private Long usuario;
     
-    public TransacaoModel() {}
+    public LancamentoModel() {}
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -35,13 +36,13 @@ public class TransacaoModel {
     public LocalDate getData() { return data; }
     public void setData(LocalDate data) { this.data = data; }
 
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
+    public Integer getCategoria() { return categoria; }
+    public void setCategoria(Integer categoria) { this.categoria = categoria; }
 
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public UsuarioModel getUsuario() { return usuario; }
-    public void setUsuario(UsuarioModel usuario) { this.usuario = usuario; }
+    public Long getUsuario() { return usuario; }
+    public void setUsuario(Long usuario) { this.usuario = usuario; }
 
 }

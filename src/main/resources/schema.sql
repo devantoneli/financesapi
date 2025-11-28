@@ -1,18 +1,39 @@
--- Criar tabelas se não existirem
 CREATE TABLE IF NOT EXISTS usuario (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    nome VARCHAR(255),
-    senha VARCHAR(255)
+    id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nm_email VARCHAR(254) NOT NULL UNIQUE,
+    nm_usuario VARCHAR(255),
+    nm_senha VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS transacao (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    categoria VARCHAR(255),
-    data DATE,
-    descricao VARCHAR(255),
-    tipo VARCHAR(255),
-    valor NUMERIC(38,2),
-    usuario_id BIGINT NOT NULL,
-    CONSTRAINT FKnnwmcpelyv6nuwrwixo6ovuv1 FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+CREATE TABLE IF NOT EXISTS categoria (
+    id_categoria INT PRIMARY KEY,
+    nm_categoria VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS lancamento (
+    id_lancamento BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_categoria BIGINT,
+    dt_lancamento DATE,
+    nm_lancamento VARCHAR(255),
+    cd_tipo CHAR(7) CHECK (cd_tipo IN ('Despesa', 'Receita')),
+    vl_lancamento NUMERIC(38,2),
+    id_usuario BIGINT NOT NULL,
+    CONSTRAINT fk_lancamento_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
+    CONSTRAINT fk_lancamento_categoria FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
+);
+
+CREATE TABLE IF NOT EXISTS saldo (
+    id_saldo BIGINT AUTO_INCREMENT PRIMARY KEY,
+    vl_saldo_atual NUMERIC(38,2),
+    id_usuario BIGINT NOT NULL,
+    CONSTRAINT fk_saldo_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
+);
+
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (1, 'Alimentação');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (2, 'Transporte');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (3, 'Moradia');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (4, 'Saúde');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (5, 'Educação');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (6, 'Lazer');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (7, 'Roupas');
+MERGE INTO categoria (id_categoria, nm_categoria) KEY(id_categoria) VALUES (8, 'Outros');
