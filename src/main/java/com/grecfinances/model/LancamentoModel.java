@@ -25,11 +25,11 @@ public class LancamentoModel {
     @Column(name = "cd_tipo")
     private String tipo; // "Receita" ou "Despesa"
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private UsuarioModel usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoriaModel categoria;
 
