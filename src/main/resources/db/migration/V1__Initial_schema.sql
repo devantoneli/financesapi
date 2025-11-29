@@ -36,3 +36,4 @@ MERGE INTO "categoria" ("id_categoria", "nm_categoria") KEY("id_categoria") VALU
 MERGE INTO "categoria" ("id_categoria", "nm_categoria") KEY("id_categoria") VALUES (6, 'Lazer');
 MERGE INTO "categoria" ("id_categoria", "nm_categoria") KEY("id_categoria") VALUES (7, 'Roupas');
 MERGE INTO "categoria" ("id_categoria", "nm_categoria") KEY("id_categoria") VALUES (8, 'Outros');
+MERGE INTO "categoria" ("id_categoria", "nm_categoria") KEY("id_categoria") VALUES (9, 'Trabalho');
