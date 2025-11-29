@@ -1,152 +1,239 @@
 (function(){
-    // Safely read the resumo object set by the inline Thymeleaf script
+    // Garante que o objeto window.__RESUMO exista e tenha as propriedades esperadas
     const resumo = window.__RESUMO || { 
+        nomeUsuario: 'Usuário',
         saldo: 0, 
         receitaMensal: 0, 
         despesaMensal: 0, 
         receitaUltimosMeses: [],
-        receitaMesAtual: [], // Add new property
-        despesasMensais: []   // Add new property
+        receitaMesAtual: [],
+        despesasMensais: [],
+        transacoesMes: [],
+        categoriasDespesa: []
     };
 
-    // Parse values
-    const rawSaldo = Number(resumo.saldo) || 0;
-    const rawReceita = Number(resumo.receitaMensal) || 0;
-    const rawDespesa = Number(resumo.despesaMensal) || 0;
-    const receitaData = Array.isArray(resumo.receitaUltimosMeses) ? resumo.receitaUltimosMeses.map(v => Number(v) || 0) : [];
-    const receitaMesData = Array.isArray(resumo.receitaMesAtual) ? resumo.receitaMesAtual.map(v => Number(v) || 0) : [];
-    const despesasMesData = Array.isArray(resumo.despesasMensais) ? resumo.despesasMensais.map(v => Number(v) || 0) : [];
-
-    // Format BRL
+    // --- Formatadores ---
     const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-    const sEl = document.getElementById('saldoValue'); 
-    if(sEl) sEl.textContent = brl.format(rawSaldo);
-    
-    const rEl = document.getElementById('receitaValue'); 
-    if(rEl) rEl.textContent = brl.format(rawReceita);
-    
-    const dEl = document.getElementById('despesaValue'); 
-    if(dEl) dEl.textContent = brl.format(rawDespesa);
 
-    // Chart.js render - Gráfico de Receita (Anual)
-    const ctxEl = document.getElementById('receitaChart');
-    if(ctxEl && typeof Chart !== 'undefined'){
-        const ctx = ctxEl.getContext('2d');
-        new Chart(ctx, {
+    // --- Inicialização dos Valores do Topo ---
+    function initializeSummaryValues() {
+        const sEl = document.getElementById('saldoValue'); 
+        if(sEl) sEl.textContent = brl.format(resumo.saldo || 0);
+        
+        const rEl = document.getElementById('receitaValue'); 
+        if(rEl) rEl.textContent = brl.format(resumo.receitaMensal || 0);
+        
+        const dEl = document.getElementById('despesaValue'); 
+        if(dEl) dEl.textContent = brl.format(resumo.despesaMensal || 0);
+    }
+
+    // --- Renderizadores de Gráficos ---
+
+    function renderReceitaAnualChart() {
+        const ctxEl = document.getElementById('receitaChart');
+        if(!ctxEl || typeof Chart === 'undefined') return;
+
+        new Chart(ctxEl.getContext('2d'), {
             type: 'bar',
             data: {
                 labels: ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'],
                 datasets:[{
                     label:'Receita',
-                    data: receitaData.length > 0 ? receitaData : [5000, 5500, 6000, 6200, 7000, 7500, 8000, 8200, 8500, 8300, 8100, 8500],
+                    data: resumo.receitaUltimosMeses || [],
                     backgroundColor: 'rgba(94,166,255,0.85)',
-                    borderRadius: 6,
-                    borderSkipped: false
+                    borderRadius: 6
                 }]
             },
-            options:{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins:{ 
-                    legend:{ display: false } 
-                },
-                scales:{
-                    x:{ 
-                        grid:{ display: false }, 
-                        ticks:{ color: 'rgba(255,255,255,0.8)' } 
-                    },
-                    y:{ 
-                        grid:{ color: 'rgba(255,255,255,0.04)' }, 
-                        ticks:{ color: 'rgba(255,255,255,0.8)' }, 
-                        beginAtZero: true 
-                    }
-                }
-            }
+            options: getDefaultChartOptions()
         });
     }
 
-    // Chart.js render - Gráfico de Receita (Mensal)
-    const ctxMesEl = document.getElementById('receitaMesChart');
-    if(ctxMesEl && typeof Chart !== 'undefined'){
-        const ctx = ctxMesEl.getContext('2d');
-        new Chart(ctx, {
+    function renderReceitaMensalChart() {
+        const ctxMesEl = document.getElementById('receitaMesChart');
+        if(!ctxMesEl || typeof Chart === 'undefined') return;
+
+        new Chart(ctxMesEl.getContext('2d'), {
             type: 'bar',
             data: {
                 labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
                 datasets:[
                     {
                         label:'Receita (Mês)',
-                        data: receitaMesData.length > 0 ? receitaMesData : [1200, 1300, 1500, 1400],
-                        backgroundColor: 'rgba(74, 222, 128, 0.8)', // Cor verde para receita
-                        borderRadius: 6,
-                        borderSkipped: false
+                        data: resumo.receitaMesAtual || [],
+                        backgroundColor: 'rgba(74, 222, 128, 0.8)'
                     },
                     {
                         label:'Despesas (Mês)',
-                        data: despesasMesData.length > 0 ? despesasMesData : [800, 900, 1100, 1000],
-                        backgroundColor: 'rgba(239, 68, 68, 0.8)', // Cor vermelha para despesas
-                        borderRadius: 6,
-                        borderSkipped: false
+                        data: resumo.despesasMensais || [],
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)'
                     }
                 ]
+            },
+            options: getDefaultChartOptions(true)
+        });
+    }
+
+    function renderCategoriaChart() {
+        const ctxCat = document.getElementById('categoriaChart');
+        const legendContainer = document.getElementById('categoria-legend-list');
+        if(!ctxCat || !legendContainer || typeof Chart === 'undefined') return;
+
+        const categorias = resumo.categoriasDespesa || [];
+        const labels = categorias.map(c => c.label);
+        const data = categorias.map(c => c.value);
+        const colors = categorias.map(c => c.color || '#64748b'); // Cor padrão
+        
+        const total = data.reduce((sum, value) => sum + value, 0);
+
+        // Gerar a lista de legendas customizada
+        let legendHtml = '';
+        if (total > 0) {
+            data.forEach((value, index) => {
+                const percentage = ((value / total) * 100).toFixed(1);
+                legendHtml += `
+                    <div class="legend-item">
+                        <div class="legend-color-box" style="background-color: ${colors[index]}"></div>
+                        <div class="legend-label">${labels[index]} (${percentage}%)</div>
+                        <div class="legend-value">${brl.format(value)}</div>
+                    </div>
+                `;
+            });
+        } else {
+            legendHtml = '<p class="text-center text-muted small">Sem dados de despesa para exibir.</p>';
+        }
+        legendContainer.innerHTML = legendHtml;
+
+        // Renderizar o gráfico
+        new Chart(ctxCat.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets:[{ data: data, backgroundColor: colors, borderColor: '#111827', borderWidth: 2 }]
             },
             options:{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins:{ 
-                    legend:{ display: true, labels: { color: 'rgba(255,255,255,0.8)' } } 
-                },
-                scales:{
-                    x:{ 
-                        grid:{ display: false }, 
-                        ticks:{ color: 'rgba(255,255,255,0.8)' } 
-                    },
-                    y:{ 
-                        grid:{ color: 'rgba(255,255,255,0.04)' }, 
-                        ticks:{ color: 'rgba(255,255,255,0.8)' }, 
-                        beginAtZero: true 
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+                                return `${label}: ${percentage}%`;
+                            }
+                        }
                     }
                 }
             }
         });
     }
 
-    // Chart.js render - Gráfico de Categorias (Doughnut)
-    const ctxCat = document.getElementById('categoriaChart');
-    if(ctxCat && typeof Chart !== 'undefined'){
-        const ctx = ctxCat.getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Moradia', 'Alimentação', 'Transporte', 'Utilidades', 'Saúde', 'Outros'],
-                datasets:[{
-                    data: [1200, 320.50, 45, 99.90, 150, 434.10],
-                    backgroundColor: [
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(249, 115, 22, 0.8)',
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(139, 92, 246, 0.8)',
-                        'rgba(236, 72, 153, 0.8)',
-                        'rgba(100, 116, 139, 0.8)'
-                    ],
-                    borderColor: '#111827',
-                    borderWidth: 2
-                }]
-            },
-            options:{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins:{ 
-                    legend:{ 
-                        position: 'bottom',
-                        labels: {
-                            color: 'rgba(255,255,255,0.8)',
-                            font: { size: 12 },
-                            padding: 15
-                        }
-                    } 
-                }
+    // --- Renderizadores de Listas ---
+
+    function generateMonthlyTable() {
+        const container = document.getElementById('monthly-table-wrap');
+        if (!container) return;
+
+        const transactions = resumo.transacoesMes || [];
+        const groupedByDate = transactions.reduce((acc, tx) => {
+            (acc[tx.date] = acc[tx.date] || []).push(tx);
+            return acc;
+        }, {});
+
+        let html = '';
+        const sortedDates = Object.keys(groupedByDate).sort((a, b) => new Date(a) - new Date(b));
+
+        if (sortedDates.length > 0) {
+            sortedDates.forEach(date => {
+                html += `<div class="day-group"><div class="day-header">${new Date(date).toLocaleDateString('pt-BR', {day:'2-digit', month:'short'})}</div>`;
+                groupedByDate[date].forEach(tx => {
+                    html += createTransactionItemHtml(tx);
+                });
+                html += `</div>`;
+            });
+        } else {
+            html = '<p class="text-center text-muted" style="padding: 2rem;">Nenhuma transação este mês.</p>';
+        }
+        container.innerHTML = html;
+    }
+
+    function generateEntradasSaidasList() {
+        const container = document.getElementById('entradas-saidas-list');
+        if (!container) return;
+
+        const transactions = resumo.transacoesMes || [];
+        let html = '';
+        if (transactions.length > 0) {
+            // Mostra as 5 transações mais recentes, por exemplo
+            transactions.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5).forEach(tx => {
+                html += createTransactionItemHtml(tx);
+            });
+        } else {
+             html = '<p class="text-center text-muted small" style="padding: 2rem;">Nenhuma transação recente.</p>';
+        }
+        container.innerHTML = html;
+    }
+
+    // --- Lógica de Alternância de Views ---
+    function setupViewToggle() {
+        const btn = document.getElementById('toggle-view-btn');
+        const chartWrap = document.getElementById('monthly-chart-wrap');
+        const tableWrap = document.getElementById('monthly-table-wrap');
+        
+        if (!btn || !chartWrap || !tableWrap) return;
+
+        btn.addEventListener('click', () => {
+            chartWrap.classList.toggle('hidden');
+            tableWrap.classList.toggle('hidden');
+            const icon = btn.querySelector('i');
+            if (chartWrap.classList.contains('hidden')) {
+                icon.classList.remove('fa-table');
+                icon.classList.add('fa-chart-bar');
+            } else {
+                icon.classList.remove('fa-chart-bar');
+                icon.classList.add('fa-table');
             }
         });
     }
+
+    // --- Funções Auxiliares ---
+    function createTransactionItemHtml(tx) {
+        const isReceita = tx.type === 'receita';
+        const formattedAmount = (isReceita ? '+' : '-') + brl.format(tx.amount || 0);
+        return `
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <div class="transaction-title">${tx.description || 'N/A'}</div>
+                </div>
+                <div class="transaction-amount ${isReceita ? 'receita' : 'despesa'}">${formattedAmount}</div>
+            </div>
+        `;
+    }
+
+    function getDefaultChartOptions(showLegend = false) {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins:{ 
+                legend:{ display: showLegend, labels: { color: 'rgba(255,255,255,0.8)' } } 
+            },
+            scales:{
+                x:{ grid:{ display: false }, ticks:{ color: 'rgba(255,255,255,0.8)' } },
+                y:{ grid:{ color: 'rgba(255,255,255,0.04)' }, ticks:{ color: 'rgba(255,255,255,0.8)' }, beginAtZero: true }
+            }
+        };
+    }
+
+    // --- Execução Inicial ---
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeSummaryValues();
+        renderReceitaAnualChart();
+        renderReceitaMensalChart();
+        renderCategoriaChart();
+        generateMonthlyTable();
+        generateEntradasSaidasList();
+        setupViewToggle();
+    });
 })();

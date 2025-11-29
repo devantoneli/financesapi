@@ -10,6 +10,10 @@ public class ResumoFinanceiroServiceModel {
     private BigDecimal receitaMensal;
     private BigDecimal despesaMensal;
     private List<BigDecimal> receitaUltimosMeses;
+    private List<BigDecimal> receitaMesAtual;
+    private List<BigDecimal> despesasMensais;
+    private List<LancamentoModel> transacoesMes;
+    private List<CategoriaDespesa> categoriasDespesa;
 
     // Getters e Setters
     public String getNomeUsuario() { return nomeUsuario; }
@@ -26,6 +30,18 @@ public class ResumoFinanceiroServiceModel {
 
     public List<BigDecimal> getReceitaUltimosMeses() { return receitaUltimosMeses; }
     public void setReceitaUltimosMeses(List<BigDecimal> receitaUltimosMeses) { this.receitaUltimosMeses = receitaUltimosMeses; }
+
+    public List<BigDecimal> getReceitaMesAtual() { return receitaMesAtual; }
+    public void setReceitaMesAtual(List<BigDecimal> receitaMesAtual) { this.receitaMesAtual = receitaMesAtual; }
+
+    public List<BigDecimal> getDespesasMensais() { return despesasMensais; }
+    public void setDespesasMensais(List<BigDecimal> despesasMensais) { this.despesasMensais = despesasMensais; }
+
+    public List<LancamentoModel> getTransacoesMes() { return transacoesMes; }
+    public void setTransacoesMes(List<LancamentoModel> transacoesMes) { this.transacoesMes = transacoesMes; }
+
+    public List<CategoriaDespesa> getCategoriasDespesa() { return categoriasDespesa; }
+    public void setCategoriasDespesa(List<CategoriaDespesa> categoriasDespesa) { this.categoriasDespesa = categoriasDespesa; }
 
     // Métodos de cálculo existentes
     public BigDecimal calcularTotalReceitas(List<LancamentoModel> lancamentos){
