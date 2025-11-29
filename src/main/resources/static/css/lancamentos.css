@@ -91,7 +91,7 @@ main {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: #fff;
-    width: 200px;
+    width: 100%;
 }
 
 .form-control::placeholder {
