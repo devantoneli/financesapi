@@ -49,6 +49,12 @@
                 <span class="badge bg-secondary"><strong id="totalCount" th:text="${total}">0</strong> Lançamentos</span>
             </form>
             <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-sm">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn btn-sm">
+                    <i class="fas fa-sliders-h"></i> Organizar: Padrão
+                </button>
                 <a th:href="@{/lancamentos/novo}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus"></i> Adicionar
                 </a>
