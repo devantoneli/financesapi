@@ -19,6 +19,7 @@ public class HomeController {
     public String home(@SessionAttribute(name = "usuarioLogado", required = false) UsuarioModel usuario, Model model) {
         String mensagem = "Olá, " + (usuario != null ? usuario.getNome() : "visitante") + "!";
         model.addAttribute("mensagem", mensagem);
+        model.addAttribute("nomeUsuario", usuario.getNome());
         model.addAttribute("categorias", categoriaRepository.findAll());
         return "home";
     }

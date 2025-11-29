@@ -54,6 +54,7 @@ body {
 .navbar-icons {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .navbar-icons a {
@@ -153,6 +154,48 @@ body {
     color: #0f1620;
     font-size: 4rem;
     font-weight: 100;
+}
+
+/* Responsividade */
+.dropdown-menu {
+    background-color: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item {
+    color: #fff;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .nav-link {
+        margin: 0 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .navbar-icons {
+        gap: 1rem;
+    }
+
+    .navbar-icons a {
+        font-size: 1rem;
+    }
+
+    .container-main h1 {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }   
 }
 
 .modal-header .modal-title {

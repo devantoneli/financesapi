@@ -112,6 +112,7 @@ public class DashboardController {
         resumo.setCategoriasDespesa(categoriasDespesa);
 
         model.addAttribute("resumo", resumo);
+        model.addAttribute("nomeUsuario", usuario.getNome());
         return "dashboard";
     }
 }
