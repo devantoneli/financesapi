@@ -1,10 +1,13 @@
 package com.grecfinances.controller;
 
+import com.grecfinances.model.CategoriaModel;
 import com.grecfinances.model.LancamentoModel;
 import com.grecfinances.model.UsuarioModel;
-import com.grecfinances.model.CategoriaModel;
-
+import com.grecfinances.repository.CategoriaRepository;
+import com.grecfinances.repository.LancamentoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +17,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/lancamentos")
 public class LancamentoController {
 
+    @Autowired
+    private LancamentoRepository lancamentoRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
     @GetMapping("/novo")
-    public String novoLancamentoForm() {
+    public String novoLancamentoForm(Model model) {
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "novo-lancamento";
     }
 
@@ -31,26 +42,27 @@ public class LancamentoController {
                                    @RequestParam("data") LocalDate data,
                                    @RequestParam("categoria") Integer categoriaId,
                                    @SessionAttribute(name = "usuarioLogado") UsuarioModel usuario,
-                                   RedirectAttributes redirectAttributes) 
+                                   RedirectAttributes redirectAttributes)
     {
-        // Create a CategoriaModel instance and set its ID.
-        // In a real application, you would fetch this from the database.
-        CategoriaModel categoria = new CategoriaModel();
-        categoria.setId(categoriaId);
+        Optional<CategoriaModel> categoriaOpt = categoriaRepository.findById(categoriaId);
+        if (categoriaOpt.isEmpty()) {
+            redirectAttributes.addFlashAttribute("erro", "Categoria não encontrada!");
+            return "redirect:/lancamentos/novo";
+        }
 
         LancamentoModel lancamento = new LancamentoModel();
         lancamento.setDescricao(descricao);
         lancamento.setValor(valor);
         lancamento.setTipo(tipo);
         lancamento.setData(data);
-        lancamento.setCategoria(categoria);
+        lancamento.setCategoria(categoriaOpt.get());
         lancamento.setUsuario(usuario);
 
-        // Lógica para salvar o lançamento no banco de dados
-        // Por enquanto, vamos apenas simular o sucesso
+        lancamentoRepository.save(lancamento);
 
         redirectAttributes.addFlashAttribute("sucesso", "Lançamento salvo com sucesso!");
 
         return "redirect:/lancamentos/novo";
     }
 }
+

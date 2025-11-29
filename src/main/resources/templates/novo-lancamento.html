@@ -19,6 +19,7 @@
         <h1 style="text-align: center; margin-bottom: 20px;">Adicionar Lançamento</h1>
 
         <div th:if="${sucesso}" class="alert alert-success" role="alert" th:text="${sucesso}"></div>
+        <div th:if="${erro}" class="alert alert-danger" role="alert" th:text="${erro}"></div>
 
         <form th:action="@{/lancamentos}" method="post">
             <div class="form-group" style="width: 100%; margin-bottom: 20px;">
@@ -35,8 +36,8 @@
                     <label for="tipo">Tipo</label>
                     <select id="tipo" name="tipo" required>
                         <option value="">Selecione o tipo</option>
-                        <option value="RECEITA">Receita</option>
-                        <option value="DESPESA">Despesa</option>
+                        <option value="Receita">Receita</option>
+                        <option value="Despesa">Despesa</option>
                     </select>
                 </div>
             </div>
@@ -50,9 +51,9 @@
                     <label for="categoria">Categoria</label>
                     <select id="categoria" name="categoria" required>
                         <option value="">Selecione a categoria</option>
-                        <option value="ALIMENTACAO">Alimentação</option>
-                        <option value="TRANSPORTE">Transporte</option>
-                        <option value="LAZER">Lazer</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.id}"
+                                th:text="${cat.nome}"></option>
                     </select>
                 </div>
             </div>
