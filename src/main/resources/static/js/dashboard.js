@@ -1,12 +1,21 @@
 (function(){
     // Safely read the resumo object set by the inline Thymeleaf script
-    const resumo = window.__RESUMO || { saldo:0, receitaMensal:0, despesaMensal:0, receitaUltimosMeses: [] };
+    const resumo = window.__RESUMO || { 
+        saldo: 0, 
+        receitaMensal: 0, 
+        despesaMensal: 0, 
+        receitaUltimosMeses: [],
+        receitaMesAtual: [], // Add new property
+        despesasMensais: []   // Add new property
+    };
 
-    // Parse values (Thymeleaf will provide numbers, but double-check)
+    // Parse values
     const rawSaldo = Number(resumo.saldo) || 0;
     const rawReceita = Number(resumo.receitaMensal) || 0;
     const rawDespesa = Number(resumo.despesaMensal) || 0;
-    const receitaData = Array.isArray(resumo.receitaUltimosMeses) ? resumo.receitaUltimosMeses.map(v=>Number(v)||0) : [];
+    const receitaData = Array.isArray(resumo.receitaUltimosMeses) ? resumo.receitaUltimosMeses.map(v => Number(v) || 0) : [];
+    const receitaMesData = Array.isArray(resumo.receitaMesAtual) ? resumo.receitaMesAtual.map(v => Number(v) || 0) : [];
+    const despesasMesData = Array.isArray(resumo.despesasMensais) ? resumo.despesasMensais.map(v => Number(v) || 0) : [];
 
     // Format BRL
     const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -19,7 +28,7 @@
     const dEl = document.getElementById('despesaValue'); 
     if(dEl) dEl.textContent = brl.format(rawDespesa);
 
-    // Chart.js render - Gráfico de Receita
+    // Chart.js render - Gráfico de Receita (Anual)
     const ctxEl = document.getElementById('receitaChart');
     if(ctxEl && typeof Chart !== 'undefined'){
         const ctx = ctxEl.getContext('2d');
@@ -40,6 +49,52 @@
                 maintainAspectRatio: false,
                 plugins:{ 
                     legend:{ display: false } 
+                },
+                scales:{
+                    x:{ 
+                        grid:{ display: false }, 
+                        ticks:{ color: 'rgba(255,255,255,0.8)' } 
+                    },
+                    y:{ 
+                        grid:{ color: 'rgba(255,255,255,0.04)' }, 
+                        ticks:{ color: 'rgba(255,255,255,0.8)' }, 
+                        beginAtZero: true 
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart.js render - Gráfico de Receita (Mensal)
+    const ctxMesEl = document.getElementById('receitaMesChart');
+    if(ctxMesEl && typeof Chart !== 'undefined'){
+        const ctx = ctxMesEl.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                datasets:[
+                    {
+                        label:'Receita (Mês)',
+                        data: receitaMesData.length > 0 ? receitaMesData : [1200, 1300, 1500, 1400],
+                        backgroundColor: 'rgba(74, 222, 128, 0.8)', // Cor verde para receita
+                        borderRadius: 6,
+                        borderSkipped: false
+                    },
+                    {
+                        label:'Despesas (Mês)',
+                        data: despesasMesData.length > 0 ? despesasMesData : [800, 900, 1100, 1000],
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)', // Cor vermelha para despesas
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }
+                ]
+            },
+            options:{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins:{ 
+                    legend:{ display: true, labels: { color: 'rgba(255,255,255,0.8)' } } 
                 },
                 scales:{
                     x:{ 

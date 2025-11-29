@@ -2,13 +2,57 @@
  * Variáveis Globais e Estilos Base
  * Define variáveis CSS raiz para cores e configura estilos básicos do corpo da página.
  */
-:root{ --bg:#0f1620; --card:#111827; --muted:#bbb; --accent:#5ea6ff }
+:root{ --bg:#0f1620; --card:#111827; --muted: rgba(255, 255, 255, 0.65); --accent:#5ea6ff }
 body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans-serif; margin:0; padding:0 }
 
 /*
  * Estilos da Barra de Navegação (Navbar)
  * Estilos para a barra de navegação principal, logotipo da marca, links de navegação e ícones.
  */
+.navbar {
+    background: #0b0f14;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff !important;
+}
+
+.navbar-brand i {
+    color: var(--accent);
+    margin-right: 0.5rem;
+}
+
+.nav-link {
+    color: var(--muted) !important;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    margin: 0 1rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar-icons a {
+    color: var(--muted);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.navbar-icons a:hover {
+    color: var(--accent);
+}
 /*
  * Estilos da Caixa de Pesquisa
  * Estilização para o campo de entrada de pesquisa e seu contêiner.
@@ -34,6 +78,9 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
 .summary-title{ font-size:0.95rem; color:rgba(255,255,255,0.8); font-weight:500 }
 .summary-value{ font-size:1.8rem; font-weight:700; color:var(--accent) }
 .summary-small{ color:rgba(255,255,255,0.55); font-size:0.85rem }
+.card.custom .mb-3 strong {
+    color: var(--accent);
+}
 
 /*
  * Estilos de Gráfico
@@ -50,7 +97,7 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
  * Ajustes para a área de conteúdo principal e elementos container-fluid.
  */
 main{ min-height:calc(100vh - 120px); padding:1rem }
-.container-fluid{ padding-left:0; padding-right:0 }
+main.container-fluid{ padding-left:0; padding-right:0 }
 .container-fluid > .row{ margin-left:0; margin-right:0 }
 
 /* Transaction List Styles */

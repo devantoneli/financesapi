@@ -21,9 +21,6 @@
                         <a class="nav-link active" th:href="@{/dashboard}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/dashboard}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" th:href="@{/lancamentos}">Lançamentos</a>
                     </li>
                 </ul>
@@ -67,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 col-lg-6">
                 <div class="card custom">
                     <div class="mb-3">
                         <strong style="font-size:1rem">Receita</strong>
@@ -75,6 +72,17 @@
                     </div>
                     <div class="chart-wrap">
                         <canvas id="receitaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card custom">
+                    <div class="mb-3">
+                        <strong style="font-size:1rem">Receita (Mês Atual)</strong>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="receitaMesChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -144,7 +152,9 @@
         saldo: /*[[${resumo.saldo}]]*/ 0,
         receitaMensal: /*[[${resumo.receitaMensal}]]*/ 0,
         despesaMensal: /*[[${resumo.despesaMensal}]]*/ 0,
-        receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ []
+        receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ [],
+        receitaMesAtual: [1500, 2000, 1800, 2500], // Dados de exemplo
+        despesasMensais: [800, 1200, 1000, 1500]     // Dados de exemplo
     };
     /*]]>*/
     </script>
