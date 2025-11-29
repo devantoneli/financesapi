@@ -119,16 +119,16 @@
                     <div class="alert alert-danger" role="alert" style="display: none;"></div>
                     <form id="addLancamentoForm">
                         <div class="mb-3">
-                            <label for="descricao" class="form-label">Título do lançamento</label>
+                            <label for="descricao" class="form-label modal-label-color">Título do lançamento</label>
                             <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Digite aqui o título do lançamento (ex. Almoço restaurante x)." required>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="valor" class="form-label">Valor</label>
+                                <label for="valor" class="form-label modal-label-color">Valor</label>
                                 <input type="number" class="form-control" id="valor" name="valor" step="0.01" placeholder="Informe o valor do lançamento" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="tipo" class="form-label">Tipo</label>
+                                <label for="tipo" class="form-label modal-label-color">Tipo</label>
                                 <select class="form-select" id="tipo" name="tipo" required>
                                     <option value="">Selecione o tipo</option>
                                     <option value="Receita">Receita</option>
@@ -138,11 +138,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="data" class="form-label">Data</label>
+                                <label for="data" class="form-label modal-label-color">Data</label>
                                 <input type="date" class="form-control" id="data" name="data" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="categoria" class="form-label">Categoria</label>
+                                <label for="categoria" class="form-label modal-label-color">Categoria</label>
                                 <select class="form-select" id="categoria" name="categoria.id" required>
                                     <option value="">Selecione a categoria</option>
                                     <option th:each="cat : ${categorias}"

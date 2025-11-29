@@ -155,30 +155,10 @@ body {
     font-weight: 100;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1rem;
-    }
+.modal-header .modal-title {
+    color: #000000;
+}
 
-    .nav-link {
-        margin: 0 0.5rem;
-        font-size: 0.9rem;
-    }
-
-    .navbar-icons {
-        gap: 1rem;
-    }
-
-    .navbar-icons a {
-        font-size: 1rem;
-    }
-
-    .container-main h1 {
-        font-size: 1.8rem;
-    }
-
-    .subtitle {
-        font-size: 1rem;
-    }
+.modal-body .form-label.modal-label-color {
+    color: #000000;
 }
