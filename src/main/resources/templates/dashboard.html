@@ -63,7 +63,25 @@
                     <div class="summary-small">Esse mês</div>
                 </div>
             </div>
-
+            
+            <div class="col-12 col-lg-6">
+                <div class="card custom">
+                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong style="font-size:1rem">Receita (Mês Atual)</strong>
+                        </div>
+                        <button id="toggle-view-btn" class="btn btn-sm btn-icon">
+                            <i class="fas fa-table"></i>
+                        </button>
+                    </div>
+                    <div class="chart-wrap" id="monthly-chart-wrap">
+                        <canvas id="receitaMesChart"></canvas>
+                    </div>
+                    <div class="transaction-list-wrap hidden" id="monthly-table-wrap">
+                        <!-- Tabela será gerada pelo JS -->
+                    </div>
+                </div>
+            </div>
             <div class="col-12 col-lg-6">
                 <div class="card custom">
                     <div class="mb-3">
@@ -75,25 +93,24 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="card custom">
-                    <div class="mb-3">
-                        <strong style="font-size:1rem">Receita (Mês Atual)</strong>
-                    </div>
-                    <div class="chart-wrap">
-                        <canvas id="receitaMesChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
+            
+            
             <div class="col-12 col-lg-6">
                 <div class="card custom">
                     <div class="mb-3">
                         <strong style="font-size:1rem">Despesas por Categoria</strong>
                     </div>
-                    <div class="chart-wrap-small">
-                        <canvas id="categoriaChart"></canvas>
+                    <div class="row align-items-center">
+                        <div class="col-7">
+                            <div class="chart-wrap-small" style="padding: 0; background: none;">
+                                <canvas id="categoriaChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div id="categoria-legend-list" class="category-legend-list">
+                                <!-- A lista será gerada pelo JS aqui -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,42 +120,8 @@
                     <div class="mb-3">
                         <strong style="font-size:1rem">Entradas e Saídas</strong>
                     </div>
-                    <div class="transaction-list">
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-title">Salário</div>
-                                <div class="transaction-category">Renda</div>
-                            </div>
-                            <div class="transaction-amount receita">+R$ 5.000,00</div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-title">Aluguel</div>
-                                <div class="transaction-category">Moradia</div>
-                            </div>
-                            <div class="transaction-amount despesa">-R$ 1.200,00</div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-title">Freelancer</div>
-                                <div class="transaction-category">Trabalho</div>
-                            </div>
-                            <div class="transaction-amount receita">+R$ 1.500,00</div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-title">Supermercado</div>
-                                <div class="transaction-category">Alimentação</div>
-                            </div>
-                            <div class="transaction-amount despesa">-R$ 320,50</div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-title">Internet</div>
-                                <div class="transaction-category">Utilidades</div>
-                            </div>
-                            <div class="transaction-amount despesa">-R$ 99,90</div>
-                        </div>
+                    <div class="transaction-list" id="entradas-saidas-list">
+                        <!-- Itens serão gerados pelo JS -->
                     </div>
                 </div>
             </div>
@@ -149,12 +132,15 @@
     <script th:inline="javascript">
     /*<![CDATA[*/
     window.__RESUMO = {
+        nomeUsuario: /*[[${resumo.nomeUsuario}]]*/ 'Usuário',
         saldo: /*[[${resumo.saldo}]]*/ 0,
         receitaMensal: /*[[${resumo.receitaMensal}]]*/ 0,
         despesaMensal: /*[[${resumo.despesaMensal}]]*/ 0,
         receitaUltimosMeses: /*[[${resumo.receitaUltimosMeses}]]*/ [],
-        receitaMesAtual: [1500, 2000, 1800, 2500], // Dados de exemplo
-        despesasMensais: [800, 1200, 1000, 1500]     // Dados de exemplo
+        receitaMesAtual: /*[[${resumo.receitaMesAtual}]]*/ [],
+        despesasMensais: /*[[${resumo.despesasMensais}]]*/ [],
+        transacoesMes: /*[[${resumo.transacoesMes}]]*/ [],
+        categoriasDespesa: /*[[${resumo.categoriasDespesa}]]*/ []
     };
     /*]]>*/
     </script>
