@@ -81,11 +81,10 @@
         const categorias = resumo.categoriasDespesa || [];
         const labels = categorias.map(c => c.label);
         const data = categorias.map(c => c.value);
-        const colors = categorias.map(c => c.color || '#64748b'); // Cor padrão
+        const colors = categorias.map(c => c.color || '#64748b');
         
         const total = data.reduce((sum, value) => sum + value, 0);
 
-        // Gerar a lista de legendas customizada
         let legendHtml = '';
         if (total > 0) {
             data.forEach((value, index) => {
@@ -103,7 +102,6 @@
         }
         legendContainer.innerHTML = legendHtml;
 
-        // Renderizar o gráfico
         new Chart(ctxCat.getContext('2d'), {
             type: 'doughnut',
             data: {
@@ -137,8 +135,12 @@
         if (!container) return;
 
         const transactions = resumo.transacoesMes || [];
+        
         const groupedByDate = transactions.reduce((acc, tx) => {
-            (acc[tx.date] = acc[tx.date] || []).push(tx);
+            const dateStr = getFormattedDateString(tx.data);
+            if(dateStr) {
+                (acc[dateStr] = acc[dateStr] || []).push(tx);
+            }
             return acc;
         }, {});
 
@@ -147,7 +149,8 @@
 
         if (sortedDates.length > 0) {
             sortedDates.forEach(date => {
-                html += `<div class="day-group"><div class="day-header">${new Date(date).toLocaleDateString('pt-BR', {day:'2-digit', month:'short'})}</div>`;
+                // Adiciona 'T00:00:00' para evitar problemas de fuso horário ao criar a data para exibição
+                html += `<div class="day-group"><div class="day-header">${new Date(date + 'T00:00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'short'})}</div>`;
                 groupedByDate[date].forEach(tx => {
                     html += createTransactionItemHtml(tx);
                 });
@@ -166,10 +169,12 @@
         const transactions = resumo.transacoesMes || [];
         let html = '';
         if (transactions.length > 0) {
-            // Mostra as 5 transações mais recentes, por exemplo
-            transactions.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5).forEach(tx => {
-                html += createTransactionItemHtml(tx);
-            });
+            transactions.slice()
+                .sort((a, b) => new Date(getFormattedDateString(b.data)) - new Date(getFormattedDateString(a.data)))
+                .slice(0, 5)
+                .forEach(tx => {
+                    html += createTransactionItemHtml(tx);
+                });
         } else {
              html = '<p class="text-center text-muted small" style="padding: 2rem;">Nenhuma transação recente.</p>';
         }
@@ -199,13 +204,32 @@
     }
 
     // --- Funções Auxiliares ---
+
+    /**
+     * Converte um objeto de data vindo do backend (seja string ou array)
+     * para uma string no formato YYYY-MM-DD.
+     */
+    function getFormattedDateString(dateObj) {
+        if (!dateObj) return null;
+        // Se já for uma string no formato correto
+        if (typeof dateObj === 'string') {
+            return dateObj.substring(0, 10);
+        }
+        // Se for um array [ano, mes, dia] (serialização padrão do Jackson para LocalDate)
+        if (Array.isArray(dateObj) && dateObj.length >= 3) {
+            const [year, month, day] = dateObj;
+            return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+        return null; // Retorna nulo se o formato for irreconhecível
+    }
+
     function createTransactionItemHtml(tx) {
-        const isReceita = tx.type === 'receita';
-        const formattedAmount = (isReceita ? '+' : '-') + brl.format(tx.amount || 0);
+        const isReceita = tx.tipo === 'Receita';
+        const formattedAmount = (isReceita ? '+' : '-') + brl.format(tx.valor || 0);
         return `
             <div class="transaction-item">
                 <div class="transaction-info">
-                    <div class="transaction-title">${tx.description || 'N/A'}</div>
+                    <div class="transaction-title">${tx.descricao || 'N/A'}</div> 
                 </div>
                 <div class="transaction-amount ${isReceita ? 'receita' : 'despesa'}">${formattedAmount}</div>
             </div>
