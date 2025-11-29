@@ -316,7 +316,7 @@ main {
 }
 
 .modal-header .modal-title {
-    color: #000000;
+    color: #000000 !important;
 }
 
 .modal-body .form-label {
@@ -324,7 +324,7 @@ main {
 }
 
 .modal-body .form-label.modal-label-color {
-    color: #000000;
+    color: #000000 !important;
 }
 
 .modal-body .form-control,
