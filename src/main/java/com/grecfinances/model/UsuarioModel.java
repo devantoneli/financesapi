@@ -1,5 +1,6 @@
 package com.grecfinances.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class UsuarioModel {
     @Column(name = "nm_senha")
     private String senha;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LancamentoModel> listaDeLancamentos = new ArrayList<>();
 

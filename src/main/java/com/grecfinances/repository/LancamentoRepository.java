@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface LancamentoRepository extends JpaRepository<LancamentoModel, Long> {
     List<LancamentoModel> findByUsuario(UsuarioModel usuario);
+    List<LancamentoModel> findByUsuarioAndDescricaoContainingIgnoreCase(UsuarioModel usuario, String descricao);
 }

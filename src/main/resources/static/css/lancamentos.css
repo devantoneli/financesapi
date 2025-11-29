@@ -304,6 +304,40 @@ main {
     color: var(--accent);
 }
 
+/* Modal Dark Theme */
+.modal-content {
+    background-color: #1a202c; /* Um cinza escuro, um pouco mais claro que o fundo */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-body .form-label {
+    color: var(--muted);
+}
+
+.modal-body .form-control,
+.modal-body .form-select {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.modal-body .form-control:focus,
+.modal-body .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(94, 166, 255, 0.25);
+}
+
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+
 @media (max-width: 768px) {
     .form-control {
         width: 100%;
