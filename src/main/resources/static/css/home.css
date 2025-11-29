@@ -195,5 +195,13 @@ body {
 
     .subtitle {
         font-size: 1rem;
-    }
+    }   
+}
+
+.modal-header .modal-title {
+    color: #000000;
+}
+
+.modal-body .form-label.modal-label-color {
+    color: #000000;
 }

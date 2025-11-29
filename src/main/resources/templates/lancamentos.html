@@ -64,9 +64,9 @@
                 <button class="btn btn-sm">
                     <i class="fas fa-sliders-h"></i> Organizar: Padrão
                 </button>
-                <a th:href="@{/lancamentos/novo}" class="btn btn-sm btn-primary">
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addLancamentoModal">
                     <i class="fas fa-plus"></i> Adicionar
-                </a>
+                </button>
             </div>
         </div>
 
@@ -101,96 +101,152 @@
                             <span th:classappend="${lancamento.tipo == 'Receita'} ? 'text-success' : 'text-danger'"
                                   th:text="${lancamento.tipo}"></span>
                         </td>
-                                                <td>
-                                                    <a href="#" class="text-primary me-2 edit-btn" title="Editar"
-                                                       data-bs-toggle="modal" data-bs-target="#editModal" th:attr="data-lancamento-id=${lancamento.id}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                    <a th:href="@{/lancamentos/excluir/{id}(id=${lancamento.id})}" class="text-danger" title="Excluir">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </main>
-                        
-                            <!-- Modal para Edição -->
-                            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editModalLabel">Editar Lançamento</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="editForm" th:action="@{/lancamentos/editar}" method="post">
-                                                <input type="hidden" id="edit-id" name="id">
-                        
-                                                <div class="mb-3">
-                                                    <label for="edit-descricao" class="form-label">Descrição</label>
-                                                    <input type="text" class="form-control" id="edit-descricao" name="descricao" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="edit-valor" class="form-label">Valor</label>
-                                                    <input type="number" class="form-control" id="edit-valor" name="valor" step="0.01" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="edit-data" class="form-label">Data</label>
-                                                    <input type="date" class="form-control" id="edit-data" name="data" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="edit-tipo" class="form-label">Tipo</label>
-                                                    <select class="form-select" id="edit-tipo" name="tipo" required>
-                                                        <option value="Receita">Receita</option>
-                                                        <option value="Despesa">Despesa</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="edit-categoria" class="form-label">Categoria</label>
-                                                    <select class="form-select" id="edit-categoria" name="categoria" required>
-                                                        <option th:each="cat : ${categorias}"
-                                                                th:value="${cat.id}"
-                                                                th:text="${cat.nome}"></option>
-                                                    </select>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                        <td>
+                            <a href="#" class="text-primary me-2 edit-btn" title="Editar"
+                               data-bs-toggle="modal" data-bs-target="#editModal" th:attr="data-lancamento-id=${lancamento.id}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{/lancamentos/excluir/{id}(id=${lancamento.id})}" class="text-danger" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal para Adicionar Lançamento -->
+    <div class="modal fade" id="addLancamentoModal" tabindex="-1" aria-labelledby="addLancamentoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLancamentoModalLabel" style="color: #000000 !important;">Adicionar Lançamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert" style="display: none;"></div>
+                    <form id="addLancamentoForm">
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label modal-label-color" style="color: #000000 !important;">Título do lançamento</label>
+                            <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Digite aqui o título do lançamento (ex. Almoço restaurante x)." required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="valor" class="form-label modal-label-color" style="color: #000000 !important;">Valor</label>
+                                <input type="number" class="form-control" id="valor" name="valor" step="0.01" placeholder="Informe o valor do lançamento" required>
                             </div>
-                        
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-                            <script>
-                                const editModal = document.getElementById('editModal');
-                                editModal.addEventListener('show.bs.modal', event => {
-                                    // Botão que acionou o modal
-                                    const button = event.relatedTarget;
-                                    // Extrai o ID do atributo data-*
-                                    const lancamentoId = button.getAttribute('data-lancamento-id');
-                        
-                                    // URL da API para buscar os dados
-                                    const apiUrl = `/api/lancamentos/${lancamentoId}`;
-                        
-                                    // Busca os dados do lançamento
-                                    fetch(apiUrl)
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data) {
-                                                // Popula o formulário no modal
-                                                const form = document.getElementById('editForm');
-                                                form.querySelector('#edit-id').value = data.id;
-                                                form.querySelector('#edit-descricao').value = data.descricao;
-                                                form.querySelector('#edit-valor').value = data.valor;
-                                                form.querySelector('#edit-data').value = data.data;
-                                                form.querySelector('#edit-tipo').value = data.tipo;
-                                                form.querySelector('#edit-categoria').value = data.categoria.id;
-                                            }
-                                        })
-                                        .catch(error => console.error('Erro ao buscar dados do lançamento:', error));
-                                });
-                            </script>
-                        </body>
-                        </html>
+                            <div class="col-md-6 mb-3">
+                                <label for="tipo" class="form-label modal-label-color" style="color: #000000 !important;">Tipo</label>
+                                <select class="form-select" id="tipo" name="tipo" required>
+                                    <option value="">Selecione o tipo</option>
+                                    <option value="Receita">Receita</option>
+                                    <option value="Despesa">Despesa</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="data" class="form-label modal-label-color" style="color: #000000 !important;">Data</label>
+                                <input type="date" class="form-control" id="data" name="data" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="categoria" class="form-label modal-label-color" style="color: #000000 !important;">Categoria</label>
+                                <select class="form-select" id="categoria" name="categoria.id" required>
+                                    <option value="">Selecione a categoria</option>
+                                    <option th:each="cat : ${categorias}"
+                                            th:value="${cat.id}"
+                                            th:text="${cat.nome}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Adicionar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para Edição -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Lançamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" th:action="@{/lancamentos/editar}" method="post">
+                        <input type="hidden" id="edit-id" name="id">
+
+                        <div class="mb-3">
+                            <label for="edit-descricao" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="edit-descricao" name="descricao" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-valor" class="form-label">Valor</label>
+                            <input type="number" class="form-control" id="edit-valor" name="valor" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-data" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="edit-data" name="data" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-tipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="edit-tipo" name="tipo" required>
+                                <option value="Receita">Receita</option>
+                                <option value="Despesa">Despesa</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-categoria" class="form-label">Categoria</label>
+                            <select class="form-select" id="edit-categoria" name="categoria" required>
+                                <option th:each="cat : ${categorias}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.nome}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script>
+        const editModal = document.getElementById('editModal');
+        editModal.addEventListener('show.bs.modal', event => {
+            // Botão que acionou o modal
+            const button = event.relatedTarget;
+            // Extrai o ID do atributo data-*
+            const lancamentoId = button.getAttribute('data-lancamento-id');
+
+            // URL da API para buscar os dados
+            const apiUrl = `/api/lancamentos/${lancamentoId}`;
+
+            // Busca os dados do lançamento
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        // Popula o formulário no modal
+                        const form = document.getElementById('editForm');
+                        form.querySelector('#edit-id').value = data.id;
+                        form.querySelector('#edit-descricao').value = data.descricao;
+                        form.querySelector('#edit-valor').value = data.valor;
+                        form.querySelector('#edit-data').value = data.data;
+                        form.querySelector('#edit-tipo').value = data.tipo;
+                        form.querySelector('#edit-categoria').value = data.categoria.id;
+                    }
+                })
+                .catch(error => console.error('Erro ao buscar dados do lançamento:', error));
+        });
+    </script>
+</body>
+</html>
