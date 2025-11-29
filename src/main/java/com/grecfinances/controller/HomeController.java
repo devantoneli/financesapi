@@ -14,6 +14,7 @@ public class HomeController {
     public String home(@SessionAttribute(name = "usuarioLogado", required = false) UsuarioModel usuario, Model model) {
         String mensagem = "Olá, " + (usuario != null ? usuario.getNome() : "variável do Java") + "!";
         model.addAttribute("mensagem", mensagem);
+        model.addAttribute("nomeUsuario", usuario.getNome());
         return "home";
     }
 
