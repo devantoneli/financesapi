@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lancamentos")
-public class LancamentoApiController {
+public class LancamentoControllerPopUp {
 
     @Autowired
     private LancamentoRepository lancamentoRepository;
