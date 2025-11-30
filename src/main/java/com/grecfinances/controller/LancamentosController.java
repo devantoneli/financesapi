@@ -31,17 +31,40 @@ public class LancamentosController {
     private CategoriaRepository categoriaRepository;
     
     @GetMapping("/lancamentos")
-    public String lancamentos(Model model, 
+    public String lancamentos(Model model,
                               @SessionAttribute(name = "usuarioLogado") UsuarioModel usuario,
-                              @RequestParam(name = "search", required = false) String search) {
+                              @RequestParam(name = "search", required = false) String search,
+                              @RequestParam(name = "tipo", required = false) String tipo,
+                              @RequestParam(name = "categoria", required = false) Integer categoriaId) {
         List<LancamentoModel> lancamentos;
-        if (search != null && !search.trim().isEmpty()) {
-            lancamentos = lancamentoRepository.findByUsuarioAndDescricaoContainingIgnoreCase(usuario, search.trim());
-            model.addAttribute("search", search);
+
+        boolean hasSearch = search != null && !search.trim().isEmpty();
+        boolean hasTipo = tipo != null && !tipo.trim().isEmpty();
+        boolean hasCategoria = categoriaId != null;
+
+        String searchValue = (search != null) ? search.trim() : "";
+
+        if (hasSearch && hasTipo && hasCategoria) {
+            lancamentos = lancamentoRepository.findByUsuarioAndTipoAndCategoria_IdAndDescricaoContainingIgnoreCase(usuario, tipo, categoriaId, searchValue);
+        } else if (hasSearch && hasTipo) {
+            lancamentos = lancamentoRepository.findByUsuarioAndTipoAndDescricaoContainingIgnoreCase(usuario, tipo, searchValue);
+        } else if (hasSearch && hasCategoria) {
+            lancamentos = lancamentoRepository.findByUsuarioAndCategoria_IdAndDescricaoContainingIgnoreCase(usuario, categoriaId, searchValue);
+        } else if (hasTipo && hasCategoria) {
+            lancamentos = lancamentoRepository.findByUsuarioAndTipoAndCategoria_Id(usuario, tipo, categoriaId);
+        } else if (hasTipo) {
+            lancamentos = lancamentoRepository.findByUsuarioAndTipo(usuario, tipo);
+        } else if (hasCategoria) {
+            lancamentos = lancamentoRepository.findByUsuarioAndCategoria_Id(usuario, categoriaId);
+        } else if (hasSearch) {
+            lancamentos = lancamentoRepository.findByUsuarioAndDescricaoContainingIgnoreCase(usuario, searchValue);
         } else {
             lancamentos = lancamentoRepository.findByUsuario(usuario);
         }
-        
+
+        model.addAttribute("search", search);
+        model.addAttribute("tipo", tipo);
+        model.addAttribute("categoria", categoriaId);
         model.addAttribute("lancamentos", lancamentos);
         model.addAttribute("total", lancamentos.size());
         model.addAttribute("categorias", categoriaRepository.findAll());
@@ -51,7 +74,8 @@ public class LancamentosController {
 
     @GetMapping("/api/lancamentos/{id}")
     @ResponseBody
-    public LancamentoModel getLancamento(@PathVariable Long id) {
+    public LancamentoModel getLancamento(@PathVariable(required = true) Long id) {
+        if (id == null) return null;
         return lancamentoRepository.findById(id).orElse(null);
     }
 
@@ -64,12 +88,20 @@ public class LancamentosController {
                                    @RequestParam("categoria") Integer categoriaId,
                                    RedirectAttributes redirectAttributes) {
 
+        if (id == null) {
+            redirectAttributes.addFlashAttribute("erro", "ID do lançamento não pode ser nulo.");
+            return "redirect:/lancamentos";
+        }
         Optional<LancamentoModel> lancamentoOpt = lancamentoRepository.findById(id);
         if (lancamentoOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("erro", "Lançamento não encontrado para editar.");
             return "redirect:/lancamentos";
         }
 
+        if (categoriaId == null) {
+            redirectAttributes.addFlashAttribute("erro", "ID da categoria não pode ser nulo.");
+            return "redirect:/lancamentos";
+        }
         Optional<CategoriaModel> categoriaOpt = categoriaRepository.findById(categoriaId);
         if (categoriaOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("erro", "Categoria selecionada é inválida.");
@@ -91,6 +123,10 @@ public class LancamentosController {
 
     @PostMapping("/lancamentos/excluir/{id}")
     public String excluirLancamento(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (id == null) {
+            redirectAttributes.addFlashAttribute("erro", "ID do lançamento não pode ser nulo.");
+            return "redirect:/lancamentos";
+        }
         try {
             lancamentoRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("sucesso", "Lançamento excluído com sucesso!");
