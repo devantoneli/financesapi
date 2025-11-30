@@ -29,7 +29,7 @@ public class LancamentosController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
-
+    
     @GetMapping("/lancamentos")
     public String lancamentos(Model model, 
                               @SessionAttribute(name = "usuarioLogado") UsuarioModel usuario,
@@ -44,7 +44,8 @@ public class LancamentosController {
         
         model.addAttribute("lancamentos", lancamentos);
         model.addAttribute("total", lancamentos.size());
-        model.addAttribute("categorias", categoriaRepository.findAll()); // Add categories for the edit form
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        model.addAttribute("nomeUsuario", usuario.getNome());
         return "lancamentos";
     }
 

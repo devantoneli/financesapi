@@ -44,6 +44,7 @@ body{ background:var(--bg); color:#fff; font-family:system-ui,-apple-system,sans
 
 .navbar-icons {
     display: flex;
+    align-items: center;
     gap: 1.5rem;
 }
 
