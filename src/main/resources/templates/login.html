@@ -33,6 +33,7 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Sua senha" required>
+                            <i class="fa-regular fa-eye password-toggle" aria-hidden="true" title="Mostrar senha"></i>
                         </div>
                         <!-- Checkbox "Lembrar-me" -->
                         <div class="mb-3 form-check">
@@ -52,3 +53,28 @@
             </div>
         </div>
     </div>
+    <script>
+        (function(){
+            // Support multiple password toggles across pages (login, cadastro)
+            document.querySelectorAll('.password-toggle').forEach(function(toggle){
+                // find the nearest input[type="password"] within the same mb-3 container
+                const container = toggle.closest('.mb-3');
+                const pwd = container ? container.querySelector('input[type="password"]') : null;
+                if(!pwd) return;
+                toggle.addEventListener('click', function(){
+                    const showing = pwd.type === 'text';
+                    if(showing){
+                        pwd.type = 'password';
+                        toggle.classList.remove('fa-solid','fa-eye-slash');
+                        toggle.classList.add('fa-regular','fa-eye');
+                        toggle.setAttribute('title','Mostrar senha');
+                    } else {
+                        pwd.type = 'text';
+                        toggle.classList.remove('fa-regular','fa-eye');
+                        toggle.classList.add('fa-solid','fa-eye-slash');
+                        toggle.setAttribute('title','Ocultar senha');
+                    }
+                });
+            });
+        })();
+    </script>

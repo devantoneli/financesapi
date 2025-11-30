@@ -84,7 +84,8 @@ html, body {
 .form-panel .form-control{
     width: 100%;
     padding: 10px 14px;
-    background: var(--input-bg);
+        background: var(--input-bg);
+        padding-right: 40px;
     border: 1px solid rgba(255,255,255,0.06);
     color: #d1d5db;
     border-radius: 6px;
@@ -139,7 +140,8 @@ html, body {
 .input-dark{
     width: 100%;
     padding: 10px 14px;
-    background: var(--input-bg);
+        background: var(--input-bg);
+        padding-right: 40px;
     border: 1px solid rgba(255,255,255,0.06);
     color: #d1d5db;
     border-radius: 6px;
