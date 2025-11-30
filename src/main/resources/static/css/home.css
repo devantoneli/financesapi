@@ -163,7 +163,7 @@ body {
 }
 
 .dropdown-item {
-    color: #fff;
+    color: #000000;
 }
 
 .dropdown-item:hover {
@@ -204,4 +204,49 @@ body {
 
 .modal-body .form-label.modal-label-color {
     color: #000000;
+}
+
+.modal-content {
+    background-color: rgb(26, 32, 44);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Cabeçalho do modal */
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borda inferior do cabeçalho */
+}
+
+/* Rótulos padrão dentro do corpo do modal */
+.modal-body .form-label {
+    color: var(--muted);
+}
+
+/* Rótulos específicos com a classe modal-label-color */
+.modal-body .form-label.modal-label-color {
+    color: #fff !important; 
+}
+
+/* Campos de controle (input, select) dentro do corpo do modal */
+.modal-body .form-control,
+.modal-body .form-select {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #000;
+}
+
+/* Campos de controle em foco dentro do corpo do modal */
+.modal-body .form-control:focus,
+.modal-body .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(94, 166, 255, 0.25);
+}
+
+/* Botão de fechar o modal */
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%); /* Ajusta a cor para ser visível em fundo escuro */
+}
+
+.form-control::placeholder {
+    color: #000 !important;
 }
