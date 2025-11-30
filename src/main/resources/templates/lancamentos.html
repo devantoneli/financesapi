@@ -52,8 +52,8 @@
             <form th:action="@{/lancamentos}" method="get" class="d-flex align-items-center gap-2">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Buscar" id="searchInput" name="search" th:value="${search}">
-                    <button type="submit" class="btn btn-primary d-none">Buscar</button> <!-- Hidden submit button -->
+                    <input type="text" class="form-control" placeholder="Buscar" id="searchInput" name="search" th:value="${search}" style="color: #ffffff;">
+                    <button type="submit" class="btn btn-primary d-none" >Buscar</button> <!-- Hidden submit button -->
                 </div>
                 <span class="badge bg-secondary"><strong id="totalCount" th:text="${total}">0</strong> Lançamentos</span>
             </form>
