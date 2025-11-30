@@ -70,8 +70,14 @@
         <!-- Seção de Filtros e Paginação (escondidos) -->
         <!-- ... -->
 
-        <div th:if="${sucesso}" class="alert alert-success mt-3" role="alert" th:text="${sucesso}"></div>
-        <div th:if="${erro}" class="alert alert-danger mt-3" role="alert" th:text="${erro}"></div>
+        <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <span th:text="${sucesso}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="color: #000000 !important;">x</button>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="color: #000000 !important;">x</button>
+        </div>
 
         <!-- Tabela -->
         <div class="table-responsive mt-3">
