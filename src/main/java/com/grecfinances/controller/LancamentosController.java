@@ -88,4 +88,15 @@ public class LancamentosController {
         redirectAttributes.addFlashAttribute("sucesso", "Lançamento atualizado com sucesso!");
         return "redirect:/lancamentos";
     }
+
+    @PostMapping("/lancamentos/excluir/{id}")
+    public String excluirLancamento(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            lancamentoRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("sucesso", "Lançamento excluído com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Erro ao excluir lançamento: " + e.getMessage());
+        }
+        return "redirect:/lancamentos";
+    }
 }
