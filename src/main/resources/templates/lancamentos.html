@@ -149,7 +149,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="categoria" class="form-label modal-label-color" style="color: #000000 !important;">Categoria</label>
-                                <select class="form-select" id="categoria" name="categoria.id" required>
+                                <select class="form-select" id="categoria" name="categoriaId" required>
                                     <option value="">Selecione a categoria</option>
                                     <option th:each="cat : ${categorias}"
                                             th:value="${cat.id}"
