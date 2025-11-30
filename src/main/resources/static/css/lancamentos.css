@@ -1,97 +1,112 @@
+/* Variáveis CSS para cores e estilos */
 :root {
-    --bg: #0f1620;
-    --card: #111827;
-    --muted: rgba(255, 255, 255, 0.65);
-    --accent: #5ea6ff;
+    --bg: #0f1620; /* Cor de fundo principal */
+    --card: #111827; /* Cor de fundo para cartões/tabelas */
+    --muted: rgba(255, 255, 255, 0.65); /* Cor para texto "apagado" ou secundário */
+    --accent: #5ea6ff; /* Cor de destaque */
 }
 
+/* Estilos globais para o corpo da página */
 body {
-    background: var(--bg);
-    color: #fff;
-    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg); /* Fundo da página */
+    color: #fff; /* Cor do texto padrão */
+    font-family: system-ui, -apple-system, sans-serif; /* Fonte padrão */
 }
 
+/* --- Estilos da Barra de Navegação (Navbar) --- */
 .navbar {
-    background: #0b0f14;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: #0b0f14; /* Fundo da navbar */
+    padding: 0.75rem 0; /* Espaçamento interno */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Borda inferior sutil */
 }
 
+/* Estilo da marca/logo na navbar */
 .navbar-brand {
-    color: #fff !important;
-    font-weight: 700;
-    font-size: 1.1rem;
+    color: #fff !important; /* Cor da marca */
+    font-weight: 700; /* Peso da fonte */
+    font-size: 1.1rem; /* Tamanho da fonte */
 }
 
+/* Ícone da marca/logo na navbar */
 .navbar-brand i {
-    margin-right: 0.5rem;
-    color: var(--accent);
+    margin-right: 0.5rem; /* Margem à direita do ícone */
+    color: var(--accent); /* Cor de destaque para o ícone */
 }
 
+/* Estilo dos links de navegação */
 .nav-link {
-    color: var(--muted) !important;
-    transition: all 0.2s;
-    font-size: 0.95rem;
-    margin: 0 1rem;
+    color: var(--muted) !important; /* Cor inicial dos links */
+    transition: all 0.2s; /* Transição suave em mudanças */
+    font-size: 0.95rem; /* Tamanho da fonte */
+    margin: 0 1rem; /* Margem horizontal */
 }
 
+/* Estilo dos links de navegação ao passar o mouse */
 .nav-link:hover {
-    color: var(--accent) !important;
+    color: var(--accent) !important; /* Cor de destaque ao passar o mouse */
 }
 
+/* Estilo do link de navegação ativo */
 .nav-link.active {
-    color: var(--accent) !important;
-    font-weight: 600;
+    color: var(--accent) !important; /* Cor de destaque para o link ativo */
+    font-weight: 600; /* Peso da fonte */
 }
 
+/* Estilo dos ícones de ação na navbar */
 .navbar-icons {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
+    display: flex; /* Layout flexbox */
+    gap: 1.5rem; /* Espaçamento entre os ícones */
+    align-items: center; /* Alinhamento vertical */
 }
 
+/* Estilo dos links de ícones na navbar */
 .navbar-icons a {
-    color: var(--muted);
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: color 0.2s;
+    color: var(--muted); /* Cor inicial dos ícones */
+    font-size: 1.1rem; /* Tamanho da fonte */
+    text-decoration: none; /* Sem sublinhado */
+    transition: color 0.2s; /* Transição suave em mudanças de cor */
 }
 
+/* Estilo dos links de ícones na navbar ao passar o mouse */
 .navbar-icons a:hover {
-    color: var(--accent);
+    color: var(--accent); /* Cor de destaque ao passar o mouse */
 }
 
-/* Main Container */
+/* --- Container Principal de Conteúdo --- */
 main {
-    min-height: calc(100vh - 80px);
-    padding: 2rem 1rem;
+    min-height: calc(100vh - 80px); /* Altura mínima (altura da viewport - altura da navbar) */
+    padding: 2rem 1rem; /* Espaçamento interno */
 }
 
+/* Título principal da página */
 .page-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #fff;
+    font-size: 1.8rem; /* Tamanho da fonte */
+    font-weight: 700; /* Peso da fonte */
+    margin-bottom: 1.5rem; /* Margem inferior */
+    color: #fff; /* Cor do título */
 }
 
+/* Container responsivo para tabelas */
 .table-responsive {
-    margin-top: 1rem;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-top: 1rem; /* Margem superior */
+    border-radius: 12px; /* Cantos arredondados */
+    overflow: hidden; /* Esconde conteúdo que transborda */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra */
 }
 
-/* Controls Section */
+/* --- Seção de Controles (Busca, Botões de Ação) --- */
 .d-flex.justify-content-between {
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-bottom: 1.5rem; /* Margem inferior */
+    flex-wrap: wrap; /* Quebra de linha em telas pequenas */
+    gap: 1rem; /* Espaçamento entre itens flex */
 }
 
+/* Agrupamento de input (campo de busca) */
 .input-group {
     width: auto;
 }
 
+/* Campo de input e select (entrada de texto, seleção) */
 .form-control {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -99,191 +114,216 @@ main {
     width: 100%;
 }
 
+/* Placeholder dos campos de input */
 .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.5); /* Cor do placeholder */
 }
 
+/* Estilo dos campos de input em foco */
 .form-control:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    box-shadow: none;
+    background: rgba(255, 255, 255, 0.1); /* Fundo um pouco mais claro */
+    border-color: rgba(255, 255, 255, 0.2); /* Borda um pouco mais clara */
+    color: #fff; /* Cor do texto */
+    box-shadow: none; /* Remove sombra padrão do foco */
 }
 
+/* Texto de ícone dentro do input group */
 .input-group-text {
-    background: transparent;
-    border: none;
-    color: var(--muted);
+    background: transparent; /* Fundo transparente */
+    border: none; /* Sem borda */
+    color: var(--muted); /* Cor do texto */
 }
 
+/* Estilo para o badge de contagem de lançamentos */
 .badge.bg-secondary {
-    background: var(--muted) !important;
-    color: #fff;
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin-left: 0.5rem;
+    background: var(--muted) !important; /* Fundo do badge */
+    color: #fff; /* Cor do texto */
+    font-weight: 400; /* Peso da fonte */
+    font-size: 0.85rem; /* Tamanho da fonte */
+    margin-left: 0.5rem; /* Margem à esquerda */
 }
 
+/* Estilo para botões pequenos */
 .btn-sm {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #fff;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.08); /* Fundo sutil */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Borda */
+    color: #fff; /* Cor do texto */
+    padding: 0.6rem 1rem; /* Espaçamento interno */
+    border-radius: 8px; /* Cantos arredondados */
+    cursor: pointer; /* Cursor de ponteiro */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    transition: all 0.2s; /* Transição suave */
 }
 
+/* Estilo dos botões pequenos ao passar o mouse */
 .btn-sm:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--accent);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.12); /* Fundo um pouco mais claro */
+    color: var(--accent); /* Cor de destaque para o texto */
+    border-color: rgba(255, 255, 255, 0.12); /* Cor da borda */
 }
 
+/* Estilo para botões primários (Adicionar) */
 .btn-primary {
-    background: var(--accent) !important;
-    border: 1px solid var(--accent) !important;
-    color: #0b0f14 !important;
-    font-weight: 600;
+    background: var(--accent) !important; /* Cor de destaque para o fundo */
+    border: 1px solid var(--accent) !important; /* Cor de destaque para a borda */
+    color: #0b0f14 !important; /* Cor escura para o texto */
+    font-weight: 600; /* Peso da fonte */
 }
 
+/* Estilo dos botões primários ao passar o mouse */
 .btn-primary:hover {
-    background: #4a95ff !important;
-    border-color: #4a95ff !important;
+    background: #4a95ff !important; /* Cor de destaque mais clara */
+    border-color: #4a95ff !important; /* Cor de destaque mais clara para a borda */
 }
 
-/* Filters Section */
+/* --- Seção de Filtros (atualmente escondida/não usada) --- */
 .filters-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+    display: flex; /* Layout flexbox */
+    align-items: center; /* Alinhamento vertical */
+    gap: 0.75rem; /* Espaçamento entre itens */
+    margin-bottom: 1rem; /* Margem inferior */
+    flex-wrap: wrap; /* Quebra de linha */
 }
 
+/* Ícone de filtro */
 .filter-icon {
-    color: var(--muted);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    color: var(--muted); /* Cor do ícone */
+    font-size: 1rem; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor de ponteiro */
+    transition: all 0.2s; /* Transição suave */
 }
 
+/* Ícone de filtro ao passar o mouse */
 .filter-icon:hover {
-    color: var(--accent);
-    transform: scale(1.1);
+    color: var(--accent); /* Cor de destaque */
+    transform: scale(1.1); /* Pequena animação */
 }
 
+/* Chip de filtro (ex: "Categoria: Alimentação") */
 .filter-chip {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: var(--muted);
-    padding: 0.4rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.08); /* Fundo */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Borda */
+    color: var(--muted); /* Cor do texto */
+    padding: 0.4rem 0.75rem; /* Espaçamento interno */
+    border-radius: 20px; /* Cantos arredondados */
+    font-size: 0.8rem; /* Tamanho da fonte */
+    display: flex; /* Layout flexbox */
+    align-items: center; /* Alinhamento vertical */
+    gap: 0.5rem; /* Espaçamento entre itens */
 }
 
+/* Botão de fechar/remover filtro */
 .filter-chip .close-filter {
-    cursor: pointer;
-    margin-left: 0.25rem;
+    cursor: pointer; /* Cursor de ponteiro */
+    margin-left: 0.25rem; /* Margem à esquerda */
 }
 
+/* Link para limpar todos os filtros */
 .clear-filters {
-    color: var(--muted);
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: color 0.2s;
+    color: var(--muted); /* Cor do texto */
+    font-size: 0.8rem; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor de ponteiro */
+    transition: color 0.2s; /* Transição suave */
 }
 
+/* Link para limpar filtros ao passar o mouse */
 .clear-filters:hover {
-    color: #fff;
+    color: #fff; /* Cor branca */
 }
 
-/* Pagination */
+/* --- Seção de Paginação --- */
 .pagination-section {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 1rem;
+    display: flex; /* Layout flexbox */
+    justify-content: flex-end; /* Alinha à direita */
+    align-items: center; /* Alinhamento vertical */
+    margin-bottom: 1rem; /* Margem inferior */
 }
 
+/* Informações da paginação (ex: "Página 1 de 5") */
 .pagination-info {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin: 0 1rem;
+    color: var(--muted); /* Cor do texto */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    margin: 0 1rem; /* Margem horizontal */
 }
 
+/* Botões de paginação */
 .pagination-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: var(--muted);
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-    margin: 0 0.25rem;
+    background: rgba(255, 255, 255, 0.08); /* Fundo */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Borda */
+    color: var(--muted); /* Cor do texto */
+    padding: 0.5rem 0.75rem; /* Espaçamento interno */
+    border-radius: 6px; /* Cantos arredondados */
+    cursor: pointer; /* Cursor de ponteiro */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    transition: all 0.2s; /* Transição suave */
+    margin: 0 0.25rem; /* Margem horizontal */
 }
 
+/* Botões de paginação ao passar o mouse */
 .pagination-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--accent);
+    background: rgba(255, 255, 255, 0.12); /* Fundo mais claro */
+    color: var(--accent); /* Cor de destaque */
 }
 
-/* Table */
+/* --- Estilo da Tabela de Lançamentos --- */
 .table {
-    background: var(--card) !important;
-    border-radius: 12px;
-    overflow: hidden;
-    color: #fff;
-    margin-bottom: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: none !important;
+    background: var(--card) !important; /* Fundo da tabela */
+    border-radius: 12px; /* Cantos arredondados */
+    overflow: hidden; /* Esconde conteúdo que transborda */
+    color: #fff; /* Cor do texto */
+    margin-bottom: 0; /* Remove margem inferior padrão */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra */
+    border: none !important; /* Remove bordas */
 }
 
+/* Cabeçalho da tabela */
 .table thead {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important; /* Fundo do cabeçalho */
 }
 
+/* Células do cabeçalho da tabela */
 .table thead th {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #fff !important;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 1rem !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-top: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; /* Borda inferior */
+    color: #fff !important; /* Cor do texto */
+    font-weight: 600; /* Peso da fonte */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    padding: 1rem !important; /* Espaçamento interno */
+    background: rgba(255, 255, 255, 0.05) !important; /* Fundo */
+    border-top: none !important; /* Remove borda superior */
 }
 
+/* Células do corpo da tabela */
 .table tbody td {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    color: var(--muted);
-    font-size: 0.9rem;
-    padding: 1rem !important;
-    background: var(--card) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* Borda inferior */
+    color: var(--muted); /* Cor do texto */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    padding: 1rem !important; /* Espaçamento interno */
+    background: var(--card) !important; /* Fundo */
 }
 
+/* Linhas do corpo da tabela */
 .table tbody tr {
-    background: var(--card) !important;
+    background: var(--card) !important; /* Fundo */
 }
 
+/* Linhas do corpo da tabela ao passar o mouse */
 .table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02) !important;
+    background: rgba(255, 255, 255, 0.02) !important; /* Fundo levemente mais claro */
 }
 
+/* Estilo para o número do lançamento na tabela */
 .numero-lancamento {
-    color: #fff;
-    font-weight: 500;
+    color: #fff; /* Cor do texto */
+    font-weight: 500; /* Peso da fonte */
 }
 
+/* Estilo para o preço na tabela */
 .preco {
-    color: #fff;
-    font-weight: 500;
+    color: #fff; /* Cor do texto */
+    font-weight: 500; /* Peso da fonte */
 }
 
+/* Badge para lançamentos do tipo Receita */
 .badge-receita {
     background: rgba(74, 222, 128, 0.15) !important;
     color: #4ade80 !important;
@@ -291,6 +331,7 @@ main {
     font-weight: 600;
 }
 
+/* Badge para lançamentos do tipo Despesa */
 .badge-despesa {
     background: rgba(239, 68, 68, 0.15) !important;
     color: #ef4444 !important;
@@ -298,6 +339,7 @@ main {
     font-weight: 600;
 }
 
+/* Menu de ações (editar, excluir) */
 .action-menu {
     color: var(--muted);
     cursor: pointer;
@@ -305,33 +347,39 @@ main {
     transition: color 0.2s;
 }
 
+/* Menu de ações ao passar o mouse */
 .action-menu:hover {
     color: var(--accent);
 }
 
-/* Modal Dark Theme */
+/* --- Estilos para o Tema Escuro do Modal (Pop-up) --- */
 .modal-content {
-    background-color: #1a202c; /* Um cinza escuro, um pouco mais claro que o fundo */
+    background-color: rgb(26, 32, 44);
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Cabeçalho do modal */
 .modal-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borda inferior do cabeçalho */
 }
 
+/* Título do modal (ex: "Adicionar Lançamento") */
 .modal-header .modal-title {
-    color: #000000 !important;
+    color: #ffffff !important;
 }
 
+/* Rótulos padrão dentro do corpo do modal */
 .modal-body .form-label {
     color: var(--muted);
 }
 
+/* Rótulos específicos com a classe modal-label-color */
 .modal-body .form-label.modal-label-color {
-    color: #000000 !important;
+    color: #000000 !important; 
 }
 
+/* Campos de controle (input, select) dentro do corpo do modal */
 .modal-body .form-control,
 .modal-body .form-select {
     background-color: rgba(255, 255, 255, 0.08);
@@ -339,6 +387,7 @@ main {
     color: #fff;
 }
 
+/* Campos de controle em foco dentro do corpo do modal */
 .modal-body .form-control:focus,
 .modal-body .form-select:focus {
     background-color: rgba(255, 255, 255, 0.1);
@@ -346,24 +395,29 @@ main {
     box-shadow: 0 0 0 0.25rem rgba(94, 166, 255, 0.25);
 }
 
+/* Botão de fechar o modal */
 .btn-close {
-    filter: invert(1) grayscale(100%) brightness(200%);
+    filter: invert(1) grayscale(100%) brightness(200%); /* Ajusta a cor para ser visível em fundo escuro */
 }
 
-
+/* --- Estilos de Responsividade --- */
 @media (max-width: 768px) {
+    /* Campo de controle com largura total */
     .form-control {
         width: 100%;
     }
 
+    /* Tamanho da fonte do cabeçalho da tabela */
     .table thead {
         font-size: 0.85rem;
     }
 
+    /* Espaçamento interno das células da tabela */
     .table tbody td {
         padding: 0.75rem;
     }
 
+    /* Tamanho da fonte do título da página */
     .page-title {
         font-size: 1.4rem;
     }
