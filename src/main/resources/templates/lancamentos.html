@@ -49,12 +49,24 @@
 
         <!-- Seção de Controles -->
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <form th:action="@{/lancamentos}" method="get" class="d-flex align-items-center gap-2">
+            <form th:action="@{/lancamentos}" method="get" class="d-flex align-items-center gap-2 flex-wrap">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Buscar" id="searchInput" name="search" th:value="${search}" style="color: #ffffff;">
-                    <button type="submit" class="btn btn-primary d-none" >Buscar</button> <!-- Hidden submit button -->
+                    <input type="text" class="form-control" placeholder="Buscar" id="searchInput" name="search" th:value="${search}" >
                 </div>
+                <select class="form-select" name="tipo" style="max-width:140px" th:value="${tipo}">
+                    <option value="">Todos os tipos</option>
+                    <option value="Receita" th:selected="${tipo} == 'Receita'">Receita</option>
+                    <option value="Despesa" th:selected="${tipo} == 'Despesa'">Despesa</option>
+                </select>
+                <select class="form-select" name="categoriaId" style="max-width:180px" th:value="${categoriaId}">
+                    <option value="">Todas categorias</option>
+                    <option th:each="cat : ${categorias}"
+                            th:value="${cat.id}"
+                            th:text="${cat.nome}"
+                            th:selected="${categoriaId} == ${cat.id}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
                 <span class="badge bg-secondary"><strong id="totalCount" th:text="${total}">0</strong> Lançamentos</span>
             </form>
             <div class="d-flex gap-2 flex-wrap">
