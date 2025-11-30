@@ -66,6 +66,23 @@
                             th:text="${cat.nome}"
                             th:selected="${categoriaId} == ${cat.id}"></option>
                 </select>
+                
+                <select class="form-select" name="mes" style="max-width:180px" th:value="${categoriaId}">
+                    <option value="">Todos os Meses</option>
+                    <option value="1" th:selected="${mes} == 1">Janeiro</option>
+                    <option value="2" th:selected="${mes} == 2">Fevereiro</option>
+                    <option value="3" th:selected="${mes} == 3">Março</option>
+                    <option value="4" th:selected="${mes} == 4">Abril</option>
+                    <option value="5" th:selected="${mes} == 5">Maio</option>
+                    <option value="6" th:selected="${mes} == 6">Junho</option>
+                    <option value="7" th:selected="${mes} == 7">Julho</option>
+                    <option value="8" th:selected="${mes} == 8">Agosto</option>
+                    <option value="9" th:selected="${mes} == 9">Setembro</option>
+                    <option value="10" th:selected="${mes} == 10">Outubro</option>
+                    <option value="11" th:selected="${mes} == 11">Novembro</option>
+                    <option value="12" th:selected="${mes} == 12">Dezembro</option>
+                </select>
+
                 <button type="submit" class="btn btn-primary">Filtrar</button>
                 <span class="badge bg-secondary"><strong id="totalCount" th:text="${total}">0</strong> Lançamentos</span>
             </form>
