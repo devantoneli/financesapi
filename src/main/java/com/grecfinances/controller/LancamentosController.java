@@ -35,13 +35,22 @@ public class LancamentosController {
                               @SessionAttribute(name = "usuarioLogado") UsuarioModel usuario,
                               @RequestParam(name = "search", required = false) String search,
                               @RequestParam(name = "tipo", required = false) String tipo,
-                              @RequestParam(name = "categoria", required = false) Integer categoriaId) {
+                              @RequestParam(name = "categoriaId", required = false) String categoriaIdParam) {
         List<LancamentoModel> lancamentos;
-
         boolean hasSearch = search != null && !search.trim().isEmpty();
         boolean hasTipo = tipo != null && !tipo.trim().isEmpty();
-        boolean hasCategoria = categoriaId != null;
 
+        // Parse seguro do parametro categoriaId (pode vir como ""), evitando erro de conversão
+        Integer categoriaId = null;
+        if (categoriaIdParam != null && !categoriaIdParam.trim().isEmpty()) {
+            try {
+                categoriaId = Integer.parseInt(categoriaIdParam.trim());
+            } catch (NumberFormatException e) {
+                categoriaId = null;
+            }
+        }
+
+        boolean hasCategoria = categoriaId != null;
         String searchValue = (search != null) ? search.trim() : "";
 
         if (hasSearch && hasTipo && hasCategoria) {
@@ -64,7 +73,7 @@ public class LancamentosController {
 
         model.addAttribute("search", search);
         model.addAttribute("tipo", tipo);
-        model.addAttribute("categoria", categoriaId);
+        model.addAttribute("categoriaId", categoriaId);
         model.addAttribute("lancamentos", lancamentos);
         model.addAttribute("total", lancamentos.size());
         model.addAttribute("categorias", categoriaRepository.findAll());
