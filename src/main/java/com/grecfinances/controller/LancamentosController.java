@@ -35,10 +35,22 @@ public class LancamentosController {
                               @SessionAttribute(name = "usuarioLogado") UsuarioModel usuario,
                               @RequestParam(name = "search", required = false) String search,
                               @RequestParam(name = "tipo", required = false) String tipo,
-                              @RequestParam(name = "categoriaId", required = false) String categoriaIdParam) {
+                              @RequestParam(name = "categoriaId", required = false) String categoriaIdParam, 
+                              @RequestParam(name = "mes", required = false) String mesParam) {
         List<LancamentoModel> lancamentos;
         boolean hasSearch = search != null && !search.trim().isEmpty();
         boolean hasTipo = tipo != null && !tipo.trim().isEmpty();
+
+        Integer mes = null;
+        if (mesParam != null && !mesParam.trim().isEmpty()){
+            try {
+                mes = Integer.parseInt(mesParam.trim());
+                if (mes < 1 || mes > 12) mes = null;
+            } catch (NumberFormatException e) {
+                mes = null;
+            }
+        }
+        System.out.println("Mes recebido: " + mes);
 
         // Parse seguro do parametro categoriaId (pode vir como ""), evitando erro de conversão
         Integer categoriaId = null;
@@ -70,6 +82,11 @@ public class LancamentosController {
         } else {
             lancamentos = lancamentoRepository.findByUsuario(usuario);
         }
+        if (mes != null) {
+            int mesFiltrado = mes;
+            lancamentos.removeIf(l -> l.getData() == null || l.getData().getMonthValue() != mesFiltrado);
+        }
+
 
         model.addAttribute("search", search);
         model.addAttribute("tipo", tipo);
