@@ -76,6 +76,17 @@ public class DashboardController {
         }
         resumo.setReceitaUltimosMeses(receitaUltimosMeses);
 
+        Map<Integer, BigDecimal> despesaPorMes = todosLancamentos.stream()
+            .filter(l -> "Despesa".equalsIgnoreCase(l.getTipo()) && l.getData().getYear() == hoje.getYear())
+            .collect(Collectors.groupingBy(l -> l.getData().getMonthValue(),
+                                           Collectors.reducing(BigDecimal.ZERO, LancamentoModel::getValor, BigDecimal::add)));
+
+        List<BigDecimal> despesaUltimosMeses = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            despesaUltimosMeses.add(despesaPorMes.getOrDefault(i, BigDecimal.ZERO));
+        }
+        resumo.setDespesaUltimosMeses(despesaUltimosMeses);
+
         List<BigDecimal> receitaPorSemana = new ArrayList<>(Arrays.asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
         List<BigDecimal> despesaPorSemana = new ArrayList<>(Arrays.asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
         
