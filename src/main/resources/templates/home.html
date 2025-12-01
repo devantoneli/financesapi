@@ -35,7 +35,7 @@
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
                     </ul>
                 </div>
@@ -45,20 +45,20 @@
 
     <!-- Container Principal -->
     <div class="container-main">
-        <h1 class="h1" th:text="${mensagem}">Bem-vindo ao GREC Finances</h1>
+        <h1 class="h1" th:text="${mensagem}" style="font-size: 3rem"></h1>
         <p class="subtitle">O que deseja fazer hoje?</p>
         <!-- Opções -->
         <div class="btn-list">
-            <a class="btn-nav" th:href="@{/dashboard}">
+            <a class="btn btn-nav" th:href="@{/dashboard}">
                 <i class="fas fa-chart-line" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
 
-            <button type="button" class="btn-nav" data-bs-toggle="modal" data-bs-target="#addLancamentoModal">
+            <button type="button" class="btn btn-nav" data-bs-toggle="modal" data-bs-target="#addLancamentoModal">
                 <i class="far fa-plus-square" aria-hidden="true"></i>
                 <span>Novo Lançamento</span>
             </button>
-            <a class="btn-nav" th:href="@{/lancamentos}">
+            <a class="btn btn-nav" th:href="@{/lancamentos}">
                 <i class="fas fa-list" aria-hidden="true"></i>
                 <span>Lançamentos</span>
             </a>

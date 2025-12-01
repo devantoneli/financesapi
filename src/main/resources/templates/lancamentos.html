@@ -34,7 +34,7 @@
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@
                             th:selected="${categoriaId} == ${cat.id}"></option>
                 </select>
                 
-                <select class="form-select" name="mes" style="max-width:180px" th:value="${categoriaId}">
+                <select class="form-select" name="mes" style="max-width:180px">
                     <option value="">Todos os Meses</option>
                     <option value="1" th:selected="${mes} == 1">Janeiro</option>
                     <option value="2" th:selected="${mes} == 2">Fevereiro</option>
@@ -87,9 +87,17 @@
                 <span class="badge bg-secondary"><strong id="totalCount" th:text="${total}">0</strong> Lançamentos</span>
             </form>
             <div class="d-flex gap-2 flex-wrap">
-                <button class="btn btn-sm">
-                    <i class="fas fa-sliders-h"></i> Organizar: Padrão
-                </button>
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-sliders-h"></i> Organizar: <span th:text="${sortNames.get(sort)} ?: 'Padrão'"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" th:href="@{/lancamentos(search=${search}, tipo=${tipo}, categoriaId=${categoriaId}, mes=${mes}, sort='recente')}" th:classappend="${sort} == 'recente' ? 'active' : ''">Mais Recentes</a></li>
+                        <li><a class="dropdown-item" th:href="@{/lancamentos(search=${search}, tipo=${tipo}, categoriaId=${categoriaId}, mes=${mes}, sort='velho')}" th:classappend="${sort} == 'velho' ? 'active' : ''">Mais Antigos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/lancamentos(search=${search}, tipo=${tipo}, categoriaId=${categoriaId}, mes=${mes}, sort='valor')}" th:classappend="${sort} == 'valor' ? 'active' : ''">Valor (maior)</a></li>
+                        <li><a class="dropdown-item" th:href="@{/lancamentos(search=${search}, tipo=${tipo}, categoriaId=${categoriaId}, mes=${mes}, sort='nome')}" th:classappend="${sort} == 'nome' ? 'active' : ''">Nome (A-Z)</a></li>
+                    </ul>
+                </div>
                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addLancamentoModal">
                     <i class="fas fa-plus"></i> Adicionar
                 </button>

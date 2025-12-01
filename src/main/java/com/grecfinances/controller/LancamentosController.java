@@ -18,7 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -36,7 +38,8 @@ public class LancamentosController {
                               @RequestParam(name = "search", required = false) String search,
                               @RequestParam(name = "tipo", required = false) String tipo,
                               @RequestParam(name = "categoriaId", required = false) String categoriaIdParam, 
-                              @RequestParam(name = "mes", required = false) String mesParam) {
+                              @RequestParam(name = "mes", required = false) String mesParam,
+                              @RequestParam(name = "sort", required = false, defaultValue = "recente") String sort) {
         List<LancamentoModel> lancamentos;
         boolean hasSearch = search != null && !search.trim().isEmpty();
         boolean hasTipo = tipo != null && !tipo.trim().isEmpty();
@@ -50,7 +53,6 @@ public class LancamentosController {
                 mes = null;
             }
         }
-        System.out.println("Mes recebido: " + mes);
 
         // Parse seguro do parametro categoriaId (pode vir como ""), evitando erro de conversão
         Integer categoriaId = null;
@@ -87,10 +89,34 @@ public class LancamentosController {
             lancamentos.removeIf(l -> l.getData() == null || l.getData().getMonthValue() != mesFiltrado);
         }
 
+        // Lógica de Ordenação
+        switch (sort) {
+            case "valor":
+                lancamentos.sort(Comparator.comparing(LancamentoModel::getValor).reversed());
+                break;
+            case "velho":
+                lancamentos.sort(Comparator.comparing(LancamentoModel::getData));
+                break;
+            case "nome":
+                lancamentos.sort(Comparator.comparing(LancamentoModel::getDescricao, String.CASE_INSENSITIVE_ORDER));
+                break;
+            case "recente":
+            default:
+                lancamentos.sort(Comparator.comparing(LancamentoModel::getData).reversed());
+                break;
+        }
 
         model.addAttribute("search", search);
         model.addAttribute("tipo", tipo);
         model.addAttribute("categoriaId", categoriaId);
+        model.addAttribute("mes", mes);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortNames", Map.of(
+            "recente", "Mais Recentes",
+            "velho", "Mais Antigos",
+            "valor", "Valor (maior)",
+            "nome", "Nome (A-Z)"
+        ));
         model.addAttribute("lancamentos", lancamentos);
         model.addAttribute("total", lancamentos.size());
         model.addAttribute("categorias", categoriaRepository.findAll());
