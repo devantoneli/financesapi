@@ -2,7 +2,6 @@ package com.grecfinances.controller;
 
 import com.grecfinances.model.CategoriaModel;
 import com.grecfinances.model.LancamentoModel;
-import com.grecfinances.model.LancamentoRequestDTO;
 import com.grecfinances.model.UsuarioModel;
 import com.grecfinances.repository.CategoriaRepository;
 import com.grecfinances.repository.LancamentoRepository;
@@ -24,18 +23,13 @@ public class LancamentoControllerPopUp {
     private CategoriaRepository categoriaRepository;
 
     @PostMapping
-    public ResponseEntity<LancamentoModel> salvarLancamento(@RequestBody LancamentoRequestDTO lancamentoDTO,
+    public ResponseEntity<LancamentoModel> salvarLancamento(@RequestBody LancamentoModel lancamento,
                                                             @SessionAttribute("usuarioLogado") UsuarioModel usuario) {
-        Optional<CategoriaModel> categoriaOpt = categoriaRepository.findById(lancamentoDTO.getCategoriaId());
+        Optional<CategoriaModel> categoriaOpt = categoriaRepository.findById(lancamento.getCategoriaId());
         if (categoriaOpt.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
-        LancamentoModel lancamento = new LancamentoModel();
-        lancamento.setDescricao(lancamentoDTO.getDescricao());
-        lancamento.setValor(lancamentoDTO.getValor());
-        lancamento.setTipo(lancamentoDTO.getTipo());
-        lancamento.setData(lancamentoDTO.getData());
         lancamento.setCategoria(categoriaOpt.get());
         lancamento.setUsuario(usuario);
 
@@ -43,4 +37,3 @@ public class LancamentoControllerPopUp {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedLancamento);
     }
 }
-

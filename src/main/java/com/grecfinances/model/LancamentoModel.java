@@ -1,6 +1,7 @@
 package com.grecfinances.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,6 +27,10 @@ public class LancamentoModel {
     @Column(name = "cd_tipo")
     private String tipo; // "Receita" ou "Despesa"
 
+    @Transient
+    @JsonProperty("categoriaId")
+    private Integer categoriaId;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
@@ -36,6 +41,15 @@ public class LancamentoModel {
     private CategoriaModel categoria;
 
     public LancamentoModel() {}
+
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public Integer getCategoriaId() {
+        return categoriaId;
+    }
+
 
     // Getters and Setters
     public Long getId() {
