@@ -157,7 +157,7 @@
                 html += `</div>`;
             });
         } else {
-            html = '<p class="text-center text-muted" style="padding: 2rem;">Nenhuma transação este mês.</p>';
+            html = '<p class="text-center text-muted" style="padding: 2rem;"></p>';
         }
         container.innerHTML = html;
     }
@@ -184,16 +184,18 @@
     // --- Lógica de Alternância de Views ---
     function setupViewToggle() {
         const btn = document.getElementById('toggle-view-btn');
-        const chartWrap = document.getElementById('monthly-chart-wrap');
-        const tableWrap = document.getElementById('monthly-table-wrap');
+        const chartView = document.getElementById('monthly-chart-view');
+        const tableView = document.getElementById('monthly-table-view');
         
-        if (!btn || !chartWrap || !tableWrap) return;
+        if (!btn || !chartView || !tableView) return;
 
         btn.addEventListener('click', () => {
-            chartWrap.classList.toggle('hidden');
-            tableWrap.classList.toggle('hidden');
+            chartView.classList.toggle('hidden');
+            tableView.classList.toggle('hidden');
+            
             const icon = btn.querySelector('i');
-            if (chartWrap.classList.contains('hidden')) {
+            // Se a visão de gráfico está oculta, o botão deve mostrar o ícone de gráfico
+            if (chartView.classList.contains('hidden')) {
                 icon.classList.remove('fa-table');
                 icon.classList.add('fa-chart-bar');
             } else {

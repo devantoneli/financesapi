@@ -47,12 +47,19 @@
             <div class="col-12 mb-1">
                 <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! 👋</h1>
                 <p class="subtitle">Esse é o seu resumo financeiro desse mês.</p>
+
+                <div th:if="${resumo.saldo == 0 and resumo.receitaMensal == 0 and resumo.despesaMensal == 0}" class="alert alert-info text-center mt-3" role="alert">
+                    <h4 class="alert-heading">Bem-vindo(a) ao seu Dashboard!</h4>
+                    <p>Parece que você ainda não tem dados financeiros registrados para este mês.</p>
+                    <hr>
+                    <p class="mb-0">Que tal começar a adicionar seus primeiros <a th:href="@{/lancamentos}" class="alert-link">lançamentos</a> para ver seu resumo aqui?</p>
+                </div>
             </div>
             
             <div class="col-12 col-lg-4">
                 <div class="card custom">
                     <div class="summary-title">Saldo</div>
-                    <div id="saldoValue" class="summary-value" th:text="${resumo.saldo}">R$ 0,00</div>
+                    <div id="saldoValue" class="summary-value" th:classappend="${resumo.saldo == 0} ? 'empty' : ''" th:text="${resumo.saldo}">R$ 0,00</div>
                     <div class="summary-small">Atualmente</div>
                 </div>
             </div>
@@ -60,7 +67,7 @@
             <div class="col-12 col-lg-4">
                 <div class="card custom">
                     <div class="summary-title">Receita</div>
-                    <div id="receitaValue" class="summary-value" th:text="${resumo.receitaMensal}">R$ 0,00</div>
+                    <div id="receitaValue" class="summary-value" th:classappend="${resumo.receitaMensal == 0} ? 'empty' : ''" th:text="${resumo.receitaMensal}">R$ 0,00</div>
                     <div class="summary-small">Esse mês</div>
                 </div>
             </div>
@@ -68,7 +75,7 @@
             <div class="col-12 col-lg-4">
                 <div class="card custom">
                     <div class="summary-title">Despesa</div>
-                    <div id="despesaValue" class="summary-value" th:text="${resumo.despesaMensal}">R$ 0,00</div>
+                    <div id="despesaValue" class="summary-value" th:classappend="${resumo.despesaMensal == 0} ? 'empty' : ''" th:text="${resumo.despesaMensal}">R$ 0,00</div>
                     <div class="summary-small">Esse mês</div>
                 </div>
             </div>
@@ -83,11 +90,26 @@
                             <i class="fas fa-table"></i>
                         </button>
                     </div>
-                    <div class="chart-wrap" id="monthly-chart-wrap">
-                        <canvas id="receitaMesChart"></canvas>
+
+                    <!-- Container da Visão do Gráfico (Padrão) -->
+                    <div id="monthly-chart-view">
+                        <div th:if="${not resumo.receitaMesAtual.empty}" class="chart-wrap" id="monthly-chart-wrap">
+                            <canvas id="receitaMesChart"></canvas>
+                        </div>
+                        <div th:unless="${not resumo.receitaMesAtual.empty}" class="no-data-message text-center p-4">
+                            <i class="fas fa-chart-line fa-3x mb-3" style="color:var(--muted);"></i>
+                            <p class="h5">Nenhuma receita registrada este mês.</p>
+                        </div>
                     </div>
-                    <div class="transaction-list-wrap hidden" id="monthly-table-wrap">
-                        <!-- Tabela será gerada pelo JS -->
+
+                    <!-- Container da Visão da Tabela (Oculto) -->
+                    <div id="monthly-table-view" class="hidden">
+                        <div th:if="${not resumo.receitaMesAtual.empty}" class="transaction-list-wrap" id="monthly-table-wrap">
+                            <!-- Tabela será gerada pelo JS -->
+                        </div>
+                        <div th:unless="${not resumo.receitaMesAtual.empty}" class="no-data-message text-center p-4">
+                            <i class="fas fa-table fa-3x mb-3" style="color:var(--muted);"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,8 +118,12 @@
                     <div class="mb-3">
                         <strong style="font-size:1rem">Receita (Anual)</strong>
                     </div>
-                    <div class="chart-wrap">
+                    <div th:if="${not resumo.receitaUltimosMeses.empty}" class="chart-wrap">
                         <canvas id="receitaChart"></canvas>
+                    </div>
+                    <div th:unless="${not resumo.receitaUltimosMeses.empty}" class="no-data-message text-center p-4">
+                        <i class="fas fa-chart-line fa-3x mb-3" style="color:var(--muted);"></i>
+                        <p class="h5">Nenhuma receita anual registrada.</p>
                     </div>
                 </div>
             </div>
@@ -108,7 +134,7 @@
                     <div class="mb-3">
                         <strong style="font-size:1rem">Despesas por Categoria (Mês Atual)</strong>
                     </div>
-                    <div class="row align-items-center">
+                    <div th:if="${not resumo.categoriasDespesa.empty}" class="row align-items-center">
                         <div class="col-7">
                             <div class="chart-wrap-small" style="padding: 0; background: none;">
                                 <canvas id="categoriaChart"></canvas>
@@ -120,6 +146,10 @@
                             </div>
                         </div>
                     </div>
+                    <div th:unless="${not resumo.categoriasDespesa.empty}" class="no-data-message text-center p-4">
+                        <i class="fas fa-tags fa-3x mb-3" style="color:var(--muted);"></i>
+                        <p class="h5">Nenhuma despesa por categoria registrada este mês.</p>
+                    </div>
                 </div>
             </div>
 
@@ -128,8 +158,12 @@
                     <div class="mb-3">
                         <strong style="font-size:1rem">Entradas e Saídas</strong>
                     </div>
-                    <div class="transaction-list" id="entradas-saidas-list">
+                    <div th:if="${not resumo.transacoesMes.empty}" class="transaction-list" id="entradas-saidas-list">
                         <!-- Itens serão gerados pelo JS -->
+                    </div>
+                    <div th:unless="${not resumo.transacoesMes.empty}" class="no-data-message text-center p-4">
+                        <i class="fas fa-exchange-alt fa-3x mb-3" style="color:var(--muted);"></i>
+                        <p class="h5">Nenhuma transação registrada este mês.</p>
                     </div>
                 </div>
             </div>
