@@ -173,18 +173,22 @@ public class LancamentosController {
         return "redirect:/lancamentos";
     }
 
+    // DELETE 2 - Recebe a requisição para excluir um lançamento pelo ID
     @PostMapping("/lancamentos/excluir/{id}")
     public String excluirLancamento(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         if (id == null) {
             redirectAttributes.addFlashAttribute("erro", "ID do lançamento não pode ser nulo.");
             return "redirect:/lancamentos";
         }
+
+        // DELETE 3 - Tenta excluir o lançamento e trata possíveis erros. deleteByID da Spring Framework transforma no comando SQL de exclusão
         try {
             lancamentoRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("sucesso", "Lançamento excluído com sucesso!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("erro", "Erro ao excluir lançamento: " + e.getMessage());
         }
+        // DELETE 4 - Redireciona de volta para a página de lançamentos após adicionar o atributo flash erro ou sucesso (segue em lancamentos.html)
         return "redirect:/lancamentos";
     }
 }
