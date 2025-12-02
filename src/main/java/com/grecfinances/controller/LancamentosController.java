@@ -45,11 +45,13 @@ public class LancamentosController {
         boolean hasTipo = tipo != null && !tipo.trim().isEmpty();
 
         Integer mes = null;
+        // Verifica se um mes foi selecionado para filtrar
         if (mesParam != null && !mesParam.trim().isEmpty()){
             try {
-                mes = Integer.parseInt(mesParam.trim());
-                if (mes < 1 || mes > 12) mes = null;
-            } catch (NumberFormatException e) {
+                
+                mes = Integer.parseInt(mesParam.trim());   // Converte o parametro mesParam para integer
+                if (mes < 1 || mes > 12) mes = null;       // Verifica se o mes é valido (caso o usuario tente manipular com o parametro)
+            } catch (NumberFormatException e) {            // Prevene que seja inserido um valor invalido (caso o usuario tente manipular com o parametro)
                 mes = null;
             }
         }
@@ -84,8 +86,11 @@ public class LancamentosController {
         } else {
             lancamentos = lancamentoRepository.findByUsuario(usuario);
         }
+
+        // Filtro por mes
+        // Caso um mês foi selecionado no filtro, não é exibido os lançamentos de outros na lista
         if (mes != null) {
-            int mesFiltrado = mes;
+            int mesFiltrado = mes;      //Converte
             lancamentos.removeIf(l -> l.getData() == null || l.getData().getMonthValue() != mesFiltrado);
         }
 

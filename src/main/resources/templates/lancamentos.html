@@ -53,11 +53,13 @@
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                     <input type="text" class="form-control" placeholder="Buscar" id="searchInput" name="search" th:value="${search}" >
                 </div>
+                <!-- Filtro por tipo -->
                 <select class="form-select" name="tipo" style="max-width:140px" th:value="${tipo}">
                     <option value="">Todos os tipos</option>
                     <option value="Receita" th:selected="${tipo} == 'Receita'">Receita</option>
                     <option value="Despesa" th:selected="${tipo} == 'Despesa'">Despesa</option>
                 </select>
+                <!-- Filtro por categoria -->
                 <select class="form-select" name="categoriaId" style="max-width:180px" th:value="${categoriaId}">
                     <option value="">Todas categorias</option>
                     <option th:each="cat : ${categorias}"
@@ -65,7 +67,7 @@
                             th:text="${cat.nome}"
                             th:selected="${categoriaId} == ${cat.id}"></option>
                 </select>
-                
+                <!-- Filtro por mês -->
                 <select class="form-select" name="mes" style="max-width:180px">
                     <option value="">Todos os Meses</option>
                     <option value="1" th:selected="${mes} == 1">Janeiro</option>
