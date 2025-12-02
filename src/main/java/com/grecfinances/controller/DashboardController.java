@@ -27,16 +27,21 @@ public class DashboardController {
     @Autowired
     private LancamentoRepository lancamentoRepository;
 
+    //DASHBOARD 1) Ao acessar /dashboard, o controller recebe a requisição.
     @GetMapping("/dashboard")
+    //DASHBOARD 2) Ele verifica se existe usuário logado; se não, redireciona para /login.
     public String dashboard(@SessionAttribute(name = "usuarioLogado", required = false) UsuarioModel usuario, Model model) {
         if (usuario == null) {
             return "redirect:/login";
         }
 
+        
+        //DASHBOARD 3) Busca todos os lançamentos (receitas e despesas) no banco.
+        List<LancamentoModel> todosLancamentos = lancamentoRepository.findByUsuario(usuario);
+        
+        //DASHBOARD 4) Cria um objeto ResumoFinanceiroServiceModel para guardar os dados do dashboard.
         ResumoFinanceiroServiceModel resumo = new ResumoFinanceiroServiceModel();
         resumo.setNomeUsuario(usuario.getNome());
-
-        List<LancamentoModel> todosLancamentos = lancamentoRepository.findByUsuario(usuario);
         
         LocalDate hoje = LocalDate.now();
         LocalDate inicioDoMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
@@ -55,7 +60,9 @@ public class DashboardController {
                 despesaMensal = despesaMensal.add(l.getValor());
             }
         }
-        
+
+        //DASHBOARD 5.1) RESUMO DO MÊS ATUAL *I*
+        //Calcula o saldo
         BigDecimal saldoTotal = todosLancamentos.stream()
             .map(l -> "Receita".equalsIgnoreCase(l.getTipo()) ? l.getValor() : l.getValor().negate())
             .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -65,36 +72,46 @@ public class DashboardController {
         resumo.setDespesaMensal(despesaMensal);
         resumo.setTransacoesMes(lancamentosDoMes);
 
+        //Calcula receita mensal
         Map<Integer, BigDecimal> receitaPorMes = todosLancamentos.stream()
             .filter(l -> "Receita".equalsIgnoreCase(l.getTipo()) && l.getData().getYear() == hoje.getYear())
             .collect(Collectors.groupingBy(l -> l.getData().getMonthValue(), 
                                            Collectors.reducing(BigDecimal.ZERO, LancamentoModel::getValor, BigDecimal::add)));
 
+
+        //Calcula despesa mensal
+        Map<Integer, BigDecimal> despesaPorMes = todosLancamentos.stream()
+            .filter(l -> "Despesa".equalsIgnoreCase(l.getTipo()) && l.getData().getYear() == hoje.getYear())
+            .collect(Collectors.groupingBy(l -> l.getData().getMonthValue(),
+            Collectors.reducing(BigDecimal.ZERO, LancamentoModel::getValor, BigDecimal::add)));
+
+        //DASHBOARD 5.2) GRÁFICO DO BALANÇO ANUAL                                  
+        //Monta dados para o gráfico anual (receita e despesa mês a mês).     
+        //Calcula o total de receitas por 12 meses                              
         List<BigDecimal> receitaUltimosMeses = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             receitaUltimosMeses.add(receitaPorMes.getOrDefault(i, BigDecimal.ZERO));
         }
-        resumo.setReceitaUltimosMeses(receitaUltimosMeses);
+        resumo.setReceitaUltimosMeses(receitaUltimosMeses); //Guarda no arryList o total
 
-        Map<Integer, BigDecimal> despesaPorMes = todosLancamentos.stream()
-            .filter(l -> "Despesa".equalsIgnoreCase(l.getTipo()) && l.getData().getYear() == hoje.getYear())
-            .collect(Collectors.groupingBy(l -> l.getData().getMonthValue(),
-                                           Collectors.reducing(BigDecimal.ZERO, LancamentoModel::getValor, BigDecimal::add)));
-
+        //Calcula o total de despesas por 12 meses  
         List<BigDecimal> despesaUltimosMeses = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             despesaUltimosMeses.add(despesaPorMes.getOrDefault(i, BigDecimal.ZERO));
         }
-        resumo.setDespesaUltimosMeses(despesaUltimosMeses);
+        resumo.setDespesaUltimosMeses(despesaUltimosMeses); //Guarda no arryList o total
 
         List<BigDecimal> receitaPorSemana = new ArrayList<>(Arrays.asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
         List<BigDecimal> despesaPorSemana = new ArrayList<>(Arrays.asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
         
+        //DASHBOARD 5.3) GRÁFICO DE RECEITA E DESPESA SEMANAL DO MÊS ATUAL
+        //Divide o mês em 4 semanas
         for (LancamentoModel l : lancamentosDoMes) {
             int diaDoMes = l.getData().getDayOfMonth();
             int semanaIndex = (diaDoMes - 1) / 7;
             if (semanaIndex > 3) semanaIndex = 3;
 
+            //Depois calcula totais
             if ("Receita".equalsIgnoreCase(l.getTipo())) {
                 receitaPorSemana.set(semanaIndex, receitaPorSemana.get(semanaIndex).add(l.getValor()));
             } else if ("Despesa".equalsIgnoreCase(l.getTipo())) {
@@ -104,6 +121,8 @@ public class DashboardController {
         resumo.setReceitaMesAtual(receitaPorSemana);
         resumo.setDespesasMensais(despesaPorSemana);
 
+        //DASHBOARD 5.4) CATEGORIAS DE DESPESA DO MÊS ATUAL
+        //Calcula total de despesas por categoria no mês atual
         Map<String, BigDecimal> despesasPorCategoriaMap = lancamentosDoMes.stream()
             .filter(l -> "Despesa".equalsIgnoreCase(l.getTipo()))
             .collect(Collectors.groupingBy(l -> l.getCategoria().getNome(),
@@ -122,6 +141,7 @@ public class DashboardController {
         
         resumo.setCategoriasDespesa(categoriasDespesa);
 
+        //DASHBOARD 6) Retorna o resumo com os dados para a view dashboard.html
         model.addAttribute("resumo", resumo);
         model.addAttribute("nomeUsuario", usuario.getNome());
         return "dashboard";
