@@ -10,6 +10,8 @@
 
 </head>
 <body>
+    <!-- DASHBOARD 1) RECEBIMENTO DE DADOS
+      Thymeleaf recebe o resumo que veio do controller -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="javascript:void(0)">
@@ -48,6 +50,8 @@
                 <h1 class="title-lg">Olá, <span th:text="${resumo.nomeUsuario}">Usuário</span>! 👋</h1>
                 <p class="subtitle">Esse é o seu resumo financeiro desse mês.</p>
 
+                <!-- DASHBOARD 2) LÓGICA CONDICIONAL
+                 Utiliza th:if para mostrar ou não o contêiner gráfico-->
                 <div th:if="${resumo.saldo == 0 and resumo.receitaMensal == 0 and resumo.despesaMensal == 0}" class="alert alert-info text-center mt-3" role="alert">
                     <h4 class="alert-heading">Bem-vindo(a) ao seu Dashboard!</h4>
                     <p>Parece que você ainda não tem dados financeiros registrados para este mês.</p>
@@ -96,7 +100,8 @@
                         <div th:if="${not resumo.receitaMesAtual.empty}" class="chart-wrap" id="monthly-chart-wrap">
                             <canvas id="receitaMesChart"></canvas>
                         </div>
-                        <div th:unless="${not resumo.receitaMesAtual.empty}" class="no-data-message text-center p-4">
+                        <!-- Utiliza th:unless para verificar se a lista está vazia-->
+                        <div th:unless="${not resumo.receitaMesAtual.empty}" class="no-data-message text-center p-4"> 
                             <i class="fas fa-chart-line fa-3x mb-3" style="color:var(--muted);"></i>
                             <p class="h5">Nenhuma receita registrada este mês.</p>
                         </div>
@@ -171,9 +176,11 @@
         </div>
     </main>
 
-    <!-- small inline script to expose model to external JS -->
+    <!-- DASHBOARD 3) INJEÇÃO DE DADOS PARA JAVASCRIPT -->
+    <!-- Converte o resumo em java para javascript -->
     <script th:inline="javascript">
-    /*<![CDATA[*/
+    
+    //Resumo convertido para objeto WINDOW
     window.__RESUMO = {
         nomeUsuario: /*[[${resumo.nomeUsuario}]]*/ 'Usuário',
         saldo: /*[[${resumo.saldo}]]*/ 0,
