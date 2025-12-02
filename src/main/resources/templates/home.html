@@ -49,15 +49,17 @@
         <p class="subtitle">O que deseja fazer hoje?</p>
         <!-- Opções -->
         <div class="btn-list">
+            <!-- Vai para o Dashboard -->
             <a class="btn btn-nav" th:href="@{/dashboard}">
                 <i class="fas fa-chart-line" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
-
+            <!-- Adiciona novo lançamento -->
             <button type="button" class="btn btn-nav" data-bs-toggle="modal" data-bs-target="#addLancamentoModal">
                 <i class="far fa-plus-square" aria-hidden="true"></i>
                 <span>Novo Lançamento</span>
             </button>
+            <!-- Vai para a tela de Lançamentos -->
             <a class="btn btn-nav" th:href="@{/lancamentos}">
                 <i class="fas fa-list" aria-hidden="true"></i>
                 <span>Lançamentos</span>

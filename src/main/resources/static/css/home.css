@@ -94,12 +94,13 @@ body {
 }
 
 /* Botões */
+    /* Lista de botões */
 .btn-list {
   display: flex;
   gap: 4rem;
   margin-top: 2rem;
 }
-
+    /* Botões */
 .btn-nav {
   display: inline-flex;
   flex-direction: column;
@@ -115,7 +116,10 @@ body {
   background-color: #0e162c;
   box-shadow: 0 6px 18px black;
   text-decoration: none;
-  /*transition: transform .12s ease, box-shadow .12s ease; */
+}
+
+.btn-nav:hover {
+  box-shadow: 0 6px 18px rgb(106, 106, 106);
 }
 
     /*Icones dos botões*/
@@ -131,10 +135,6 @@ body {
   color: white;
   text-align: center;
   display: block;
-}
-
-.btn-nav:hover {
-  box-shadow: 0 6px 18px rgb(106, 106, 106);
 }
 
 /* Footer */
