@@ -124,6 +124,7 @@ public class LancamentosController {
         return "lancamentos";
     }
 
+    // UPDATE 3 - Recebe a requisição para buscar um orçamento pelo ID  (segue em lancamentos.html)
     @GetMapping("/api/lancamentos/{id}")
     @ResponseBody
     public LancamentoModel getLancamento(@PathVariable(required = true) Long id) {
@@ -131,6 +132,7 @@ public class LancamentosController {
         return lancamentoRepository.findById(id).orElse(null);
     }
 
+    // UPDATE 5 - Recebe a requisição para editar o lançamento com os dados preenchidos no formulário relacionando name do html com os atributos correspondentes
     @PostMapping("/lancamentos/editar")
     public String editarLancamento(@RequestParam("id") Long id,
                                    @RequestParam("descricao") String descricao,
@@ -169,6 +171,7 @@ public class LancamentosController {
 
         lancamentoRepository.save(lancamento);
 
+        // UPDATE 6 - Assim como no delete, redireciona de volta para a página de lançamentos após adicionar o atributo flash de sucesso ou de erro
         redirectAttributes.addFlashAttribute("sucesso", "Lançamento atualizado com sucesso!");
         return "redirect:/lancamentos";
     }

@@ -144,7 +144,7 @@
                                   th:text="${lancamento.tipo}"></span>
                         </td>
                         <td>
-                             <!-- UPDATE 1 - Ícone de editar que abre o modal com formulário (segue em lancamentos.js)-->
+                             <!-- UPDATE 1 - Ícone de editar que abre o modal com formulário (segue em modal.js)-->
                             <a href="#" class="text-primary me-2 edit-btn" title="Editar"
                                data-bs-toggle="modal" data-bs-target="#editModal" th:attr="data-lancamento-id=${lancamento.id}">
                                 <i class="fas fa-edit"></i>
@@ -219,6 +219,7 @@
 
 
     <!-- Modal para Edição -->
+    <!-- UPDATE 4 - Formulário para edição que recebe os dados e submita através de requisição POST para o controller -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
