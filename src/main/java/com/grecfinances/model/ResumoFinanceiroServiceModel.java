@@ -10,6 +10,7 @@ public class ResumoFinanceiroServiceModel {
     private BigDecimal receitaMensal;
     private BigDecimal despesaMensal;
     private List<BigDecimal> receitaUltimosMeses;
+    private List<BigDecimal> despesaUltimosMeses;
     private List<BigDecimal> receitaMesAtual;
     private List<BigDecimal> despesasMensais;
     private List<LancamentoModel> transacoesMes;
@@ -30,6 +31,9 @@ public class ResumoFinanceiroServiceModel {
 
     public List<BigDecimal> getReceitaUltimosMeses() { return receitaUltimosMeses; }
     public void setReceitaUltimosMeses(List<BigDecimal> receitaUltimosMeses) { this.receitaUltimosMeses = receitaUltimosMeses; }
+
+    public List<BigDecimal> getDespesaUltimosMeses() { return despesaUltimosMeses; }
+    public void setDespesaUltimosMeses(List<BigDecimal> despesaUltimosMeses) { this.despesaUltimosMeses = despesaUltimosMeses; }
 
     public List<BigDecimal> getReceitaMesAtual() { return receitaMesAtual; }
     public void setReceitaMesAtual(List<BigDecimal> receitaMesAtual) { this.receitaMesAtual = receitaMesAtual; }

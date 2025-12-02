@@ -33,14 +33,26 @@
         const ctxEl = document.getElementById('receitaChart');
         if(!ctxEl || typeof Chart === 'undefined') return;
 
+        const receitas = resumo.receitaUltimosMeses || [];
+        const despesas = resumo.despesaUltimosMeses || [];
+        
+        // Garante que os valores são números antes de subtrair
+        const balancoMensal = receitas.map((receita, index) => {
+            const valorReceita = parseFloat(receita || 0);
+            const valorDespesa = parseFloat(despesas[index] || 0);
+            return valorReceita - valorDespesa;
+        });
+
+        const backgroundColors = balancoMensal.map(valor => valor >= 0 ? 'rgba(74, 222, 128, 0.8)' : 'rgba(239, 68, 68, 0.8)');
+
         new Chart(ctxEl.getContext('2d'), {
             type: 'bar',
             data: {
                 labels: ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'],
                 datasets:[{
-                    label:'Receita',
-                    data: resumo.receitaUltimosMeses || [],
-                    backgroundColor: 'rgba(94,166,255,0.85)',
+                    label: 'Balanço Mensal',
+                    data: balancoMensal,
+                    backgroundColor: backgroundColors,
                     borderRadius: 6
                 }]
             },
@@ -171,7 +183,7 @@
         if (transactions.length > 0) {
             transactions.slice()
                 .sort((a, b) => new Date(getFormattedDateString(b.data)) - new Date(getFormattedDateString(a.data)))
-                .slice(0, 5)
+                .slice(0, 6)
                 .forEach(tx => {
                     html += createTransactionItemHtml(tx);
                 });
